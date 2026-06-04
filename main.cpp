@@ -3,7 +3,7 @@
 #include <fstream>
 using namespace std;
 
-//login
+//login pengguna
 const int MAX_AKUN =100;
 int jml_akun = 0;
 
@@ -60,8 +60,8 @@ bool login(string user, string pass){
 
 void menu_login(){
     cout << "======= MENU LOGIN =======" << endl;
-    cout << "1.Login akun" << endl;
-    cout << "2.Buat akun" << endl;
+    cout << "1.Login" << endl;
+    cout << "2.Register" << endl;
     cout << "3.keluar" << endl;
     cout << "==========================" << endl;
     cout << "Masukan pilihan anda : ";
@@ -70,11 +70,116 @@ void menu_login(){
     system("cls");
 }
 
+//menu awal
+int pilihan_awal;
+void menu_awal(){
+    cout << "======= MENU AWAL =======" << endl;
+    cout << "1.Sebagai Penjual" << endl;
+    cout << "2.Sebagai Pembeli" << endl;
+    cout << "3.keluar" << endl;
+    cout << "==========================" << endl;
+    cout << "Masukan pilihan anda : ";
+    cin >> pilihan_awal;
+    cin.ignore();
+    system("cls");
+}
+
+//menu penjual
+struct kode{
+    string kode_penjual;
+};
+
+bool login_kode;
+kode Codes[1] ={"11223344"};
+string kode_kode;
+
+void menu_penjual(){
+    bool login_kode = false;
+    do {
+    cout << "======= MENU PENJUAL =======" << endl;
+    cout << "Masukkan Kode : ";
+    getline(cin, kode_kode);
+    system("cls");
+    
+        
+    //CEK KODE BERHASIL
+        if (kode_kode == Codes[0].kode_penjual) {
+            login_kode = true;
+            cout << "\t================ Login Berhasil ================";
+            cout << "\n\t\t     Selamat datang Admin! "<< endl;
+            cout << "\t================================================";
+            cin.get();
+            system("cls");
+
+        } else {
+            cout << "\t=================**Kode Gagal**=================";
+            cout << "\n\t\t username atau password salah"; 
+            cout << "\n\t=================================================";
+            cin.get();
+            system("cls");
+        }
+    } while (!login_kode);   
+
+    //menu admin penjual
+            int pilih;
+            do {
+                cout << "===== MENU ADMIN =====" << endl;
+                cout << "1. Tambah Barang" << endl;
+                cout << "2. Hapus Barang" << endl;
+                cout << "3. Lihat data barang" << endl;
+                cout << "4. Keluar" << endl;
+                cout << "======================" << endl;
+                cout << "Masukkan pilihan anda : ";
+                cin >> pilih;
+
+                switch (pilih)
+                {
+                case 1: break;
+                case 2: break;
+                case 3: break;
+                case 4: system("cls"); break;
+                
+                default:
+                    break;
+                }
+            }while(pilih != 4);
+}
+
 
 int main() {
     int pilihan;
 
-    //login
+    //menu awal
+    menu_awal :
+    do {
+        menu_awal();
+        switch (pilihan_awal)
+        {
+        case 1:
+            menu_penjual();
+
+            break;
+        case 2:
+            goto menu_login;
+            break;
+
+        case 3:
+            return 0;
+            break;
+        
+        default:
+        cout << "\t============================****=============================";
+        cout << "\n\t\t  pilihan salah, tekan enter untuk coba lagi";
+        cout << "\n\t============================****=============================";
+        cin.get ();
+        system ("cls");
+        goto menu_awal;
+        break;
+            break;
+        }
+    }while(pilihan_awal != 3);
+     
+    //menu pembeli
     muat_akun();
     menu_login :
     do {
