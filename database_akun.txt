@@ -1,0 +1,3 @@
+|cd "d:\FP MARKETPLACE\" ; if ($?) { g++ main.cpp -o main } ; if ($?) { .\main }
+Mifta|12345
+kurniawan|1122
