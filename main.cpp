@@ -110,6 +110,12 @@ int main() {
         return 0;
         
     default:
+        cout << "\t============================****=============================";
+        cout << "\n\t\t  pilihan salah, tekan enter untuk coba lagi";
+        cout << "\n\t============================****=============================";
+        cin.get ();
+        system ("cls");
+        goto menu_login;
         break;
     }
     }while( pilihan_login != 3);
