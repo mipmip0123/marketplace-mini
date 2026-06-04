@@ -120,8 +120,8 @@ int main() {
     }
     }while( pilihan_login != 3);
 
-    menu_utama :
     //menu utama
+    menu_utama :
     do {
         cout << "=========== MARKETPLACE HANDPHONE ==========" << endl;
         cout << "\t1.Tambah data" << endl;
