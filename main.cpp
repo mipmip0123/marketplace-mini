@@ -1,7 +1,109 @@
 #include <iostream>
 #include <stdlib.h>
 #include <fstream>
+#include <iomanip>
 using namespace std;
+
+//mengatur rupiah
+struct format_rupiah : numpunct<char>{
+    char do_thousands_sep() const {return '.';}
+    string so_grouping() const {return "\3";}
+};
+
+//database produk
+struct produk {
+    string nama;
+    string spesifikasi;
+    double harga;
+    int stok;
+};
+
+const int MAX_PRODUK = 100;
+produk daftar_produk[MAX_PRODUK];
+int jml_produk = 0;
+
+void simpan_produk() {
+    ofstream file ("database_produk.txt");
+    if (!file)  {
+        cout << "Gagal Membuka file untuk menyimpan!\n";
+        return;
+    }  
+    for (int i = 0; i < jml_produk; i++) {
+        file << daftar_produk[i].nama << "|";
+        file << daftar_produk[i].spesifikasi << "|";
+        file << fixed << setprecision(0) << daftar_produk[i].harga << "|"; //membuat angka desimal dibulatkan dan menghapus semua angka di belakang koma
+        file << daftar_produk[i].stok << "|" << endl;
+    }
+    file.close();
+    cout << "Data produk berhasil disimpan\n";
+}
+
+int muat_produk() {
+    ifstream file("database_produk.txt");
+    if (!file) {
+        cout << ">> Database belum ada, mulai dengan data default.\n";
+        return 0;
+    }
+    jml_produk = 0;
+    string line;
+    while (getline(file, line)) {
+        if(line.empty()) continue;
+
+        size_t pos1 = line.find("|");
+        size_t pos2 = line.find("|", pos1 + 1);
+        size_t pos3 = line.find("|", pos2 + 1);
+        size_t pos4 = line.find("|", pos3 + 1);
+
+        daftar_produk[jml_produk].nama = line.substr(0, pos1);
+        daftar_produk[jml_produk].spesifikasi = line.substr(pos1 + 1, pos2 - pos1 - 1);
+        daftar_produk[jml_produk].harga = stod(line.substr(pos2+1, pos3-pos2-1));
+        daftar_produk[jml_produk].stok  = stoi(line.substr(pos3+1, pos4-pos3-1));
+        jml_produk++;
+    }
+    file.close();
+    return jml_produk;
+}
+
+void tambah_produk() {
+    if(jml_produk >= MAX_PRODUK) {
+        cout << "Database penuh tidak dapat menambah produk lagi\n";
+        return;
+    }
+
+    cin.ignore();
+    cout << "Masukan nama produk :";
+    getline(cin, daftar_produk[jml_produk].nama);
+    cout << "Masukan spesifikasi produk :";
+    getline(cin, daftar_produk[jml_produk].spesifikasi);
+    cout << "Masukan harga produk : Rp.";
+    cin >> daftar_produk[jml_produk].harga;
+    cout << "Masukan jumlah stok :";
+    cin >> daftar_produk[jml_produk].stok;
+    jml_produk++;
+    simpan_produk();
+}
+
+void tampilkan_produk() {
+    if(jml_produk == 0) {
+        cout << "";
+    }
+
+    cout.imbue(locale(cout.getloc(), new format_rupiah));
+    cout << "========== DAFTAR PRODUK ==========" << endl;
+    for(int i = 0; i < jml_produk; i++){
+        cout << i + 1 << "."
+             << daftar_produk[i].nama
+             << "|" << daftar_produk[i].spesifikasi
+             << "|" << fixed << setprecision(0) <<daftar_produk[i].harga
+             << "|" << daftar_produk[i].stok << endl;           
+    }
+    cout << "===================================" << endl; 
+    cin.ignore();
+    cout << "Tekan enter untuk kembali ke menu";
+    cin.get();
+    system("cls");
+}
+
 
 //login pengguna
 const int MAX_AKUN =100;
@@ -60,9 +162,9 @@ bool login(string user, string pass){
 
 void menu_login(){
     cout << "======= MENU LOGIN =======" << endl;
-    cout << "1.Login" << endl;
-    cout << "2.Register" << endl;
-    cout << "3.keluar" << endl;
+    cout << "|       1.Login          |" << endl;
+    cout << "|       2.Register       |" << endl;
+    cout << "|       3.keluar         |" << endl;
     cout << "==========================" << endl;
     cout << "Masukan pilihan anda : ";
     cin >> pilihan_login;
@@ -74,9 +176,9 @@ void menu_login(){
 int pilihan_awal;
 void menu_awal(){
     cout << "======= MENU AWAL =======" << endl;
-    cout << "1.Sebagai Penjual" << endl;
-    cout << "2.Sebagai Pembeli" << endl;
-    cout << "3.keluar" << endl;
+    cout << "|  1.Sebagai Penjual    |" << endl;
+    cout << "|  2.Sebagai Pembeli    |" << endl;
+    cout << "|  3.keluar             |" << endl;
     cout << "==========================" << endl;
     cout << "Masukan pilihan anda : ";
     cin >> pilihan_awal;
@@ -105,16 +207,17 @@ void menu_penjual(){
     //CEK KODE BERHASIL
         if (kode_kode == Codes[0].kode_penjual) {
             login_kode = true;
-            cout << "\t================ Login Berhasil ================";
-            cout << "\n\t\t     Selamat datang Admin! "<< endl;
-            cout << "\t================================================";
+            cout << "================ Login Berhasil ================" << endl;
+            cout << "|            Selamat datang Admin!             |" << endl;
+            cout << "================================================";
             cin.get();
             system("cls");
 
         } else {
-            cout << "\t=================**Kode Gagal**=================";
-            cout << "\n\t\t username atau password salah"; 
-            cout << "\n\t=================================================";
+            cout << "================= Kode Gagal =================" << endl;
+            cout << "|       Kode yang anda masukan salah!        |" << endl;
+            cout << "|                 Coba lagi!                 |" << endl; 
+            cout << "==============================================";
             cin.get();
             system("cls");
         }
@@ -123,20 +226,21 @@ void menu_penjual(){
     //menu admin penjual
             int pilih;
             do {
-                cout << "===== MENU ADMIN =====" << endl;
-                cout << "1. Tambah Barang" << endl;
-                cout << "2. Hapus Barang" << endl;
-                cout << "3. Lihat data barang" << endl;
-                cout << "4. Keluar" << endl;
-                cout << "======================" << endl;
+                cout << "======= MENU ADMIN =======" << endl;
+                cout << "|  1. Tambah Barang      |" << endl;
+                cout << "|  2. Hapus Barang       |" << endl;
+                cout << "|  3. Lihat data barang  |" << endl;
+                cout << "|  4. Keluar             |" << endl;
+                cout << "==========================" << endl;
                 cout << "Masukkan pilihan anda : ";
                 cin >> pilih;
+                system("cls");
 
                 switch (pilih)
                 {
-                case 1: break;
+                case 1: tambah_produk(); break;
                 case 2: break;
-                case 3: break;
+                case 3: tampilkan_produk(); break;
                 case 4: system("cls"); break;
                 
                 default:
@@ -168,9 +272,9 @@ int main() {
             break;
         
         default:
-        cout << "\t============================****=============================";
-        cout << "\n\t\t  pilihan salah, tekan enter untuk coba lagi";
-        cout << "\n\t============================****=============================";
+        cout << "============================****=============================" << endl;
+        cout << "|      pilihan salah, tekan enter untuk coba lagi           |" << endl;
+        cout << "============================****=============================";
         cin.get ();
         system ("cls");
         goto menu_awal;
@@ -215,9 +319,9 @@ int main() {
         return 0;
         
     default:
-        cout << "\t============================****=============================";
-        cout << "\n\t\t  pilihan salah, tekan enter untuk coba lagi";
-        cout << "\n\t============================****=============================";
+        cout << "============================****=============================" << endl;
+        cout << "|      pilihan salah, tekan enter untuk coba lagi           |" << endl;
+        cout << "============================****=============================";
         cin.get ();
         system ("cls");
         goto menu_login;
@@ -229,15 +333,15 @@ int main() {
     menu_utama :
     do {
         cout << "=========== MARKETPLACE HANDPHONE ==========" << endl;
-        cout << "\t1.Tambah data" << endl;
-        cout << "\t2.Tampilkan data" << endl;
-        cout << "\t3.Updtate data" << endl;
-        cout << "\t4.Hapus data" << endl;
-        cout << "\t5.Cari data" << endl;
-        cout << "\t6.Urutkan data" << endl;
-        cout << "\t7.Simulasi stack" << endl;
-        cout << "\t8.Simulasi queue" << endl;
-        cout << "\t9.Keluar" << endl;
+        cout << "|            1.Tambah data                 |" << endl;
+        cout << "|            2.Tampilkan data              |" << endl;
+        cout << "|            3.Updtate data                |" << endl;
+        cout << "|            4.Hapus data                  |" << endl;
+        cout << "|            5.Cari data                   |" << endl;
+        cout << "|            6.Urutkan data                |" << endl;
+        cout << "|            7.Simulasi stack              |" << endl;
+        cout << "|            8.Simulasi queue              |" << endl;
+        cout << "|            9.Keluar                      |" << endl;
         cout << "============================================" << endl;
         cout << "Masukan pilihan anda : ";
         cin >> pilihan;
