@@ -21,6 +21,18 @@ struct produk
     int stok;
 };
 
+struct Nota
+{
+    string namaProduk;
+    int jumlah;
+    double totalHarga;
+    Nota *next;
+    Nota *prev;
+};
+
+Nota *head = NULL;
+Nota *tail = NULL;
+
 // database akun
 //==============================
 const int MAX_AKUN = 100;
@@ -346,6 +358,78 @@ void search_produk() {
     }
 }
 
+void tambah_nota(string nama, int jumlah, double total)
+{
+    Nota *baru = new Nota;
+    baru->namaProduk = nama;
+    baru->jumlah = jumlah;
+    baru->totalHarga = total;
+    baru->next = NULL;
+    baru->prev = NULL;
+
+    if (head == NULL)
+    {
+        head = tail = baru;
+    }else
+    {
+        tail->next = baru;
+        baru->prev = tail;
+        tail = baru;
+    }
+}
+
+void tampil_riwayat()
+{
+    Nota *temp = head;
+
+    if (temp == NULL)
+    {
+        cout << "Belum ada riwayat pembelian\n";
+        return;
+    }
+
+    while (temp !=NULL)
+    {
+        cout << "Produk  : " << temp->namaProduk << endl;
+        cout << "Jumlah  : " << temp->jumlah << endl;
+        cout << "Total   : " << temp->totalHarga << endl;
+        cout << "___________________" << endl;
+
+        temp = temp->next;
+    }
+}
+
+void Checkout()
+{
+    string nama;
+    int jumlah;
+
+    cout << "Masukkan nama produk: ";
+    getline(cin, nama);
+
+    cout << "Masukkan jumlah: ";
+    cin >> jumlah;
+    cin.ignore();
+
+    for (int i = 0; i < jml_produk; i++)
+    {
+        if (daftar_produk[i].nama == nama)
+        {
+            double total = daftar_produk[i].harga * jumlah;
+            tambah_nota(nama, jumlah, total);
+            daftar_produk[i].stok -= jumlah;
+            if (jumlah > daftar_produk[i].stok)
+            {
+                cout << "Stok tidak cukup!\n";
+                return;
+            }
+
+            cout << "Checkout Berhasil!\n";
+            return;
+        }
+    }
+}
+
 int main()
 {
 muat_akun();
@@ -505,10 +589,10 @@ menu_utama:
 
             break;
         case 6:
-
+            Checkout();
             break;
         case 7:
-
+            tampil_riwayat();
             break;
         case 8:
 
