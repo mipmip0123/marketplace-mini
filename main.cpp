@@ -20,6 +20,13 @@ struct produk
     double harga;
     int stok;
 };
+struct new_produk
+{
+    string nama;
+    string spesifikasi;
+    double harga;
+    int stok;
+} new_produk;
 
 // database akun
 //==============================
@@ -163,6 +170,8 @@ int muat_produk()
 // Function Tambah Produk
 void tambah_produk()
 {
+    int idx = -1;
+
     if (jml_produk >= MAX_PRODUK)
     {
         cout << "Database penuh tidak dapat menambah produk lagi\n";
@@ -171,24 +180,53 @@ void tambah_produk()
 
     cin.ignore();
     cout << "Masukan nama produk :";
-    getline(cin, daftar_produk[jml_produk].nama);
-    cout << "Masukan spesifikasi produk :";
-    getline(cin, daftar_produk[jml_produk].spesifikasi);
-    cout << "Masukan harga produk : Rp.";
-    cin >> daftar_produk[jml_produk].harga;
-    cout << "Masukan jumlah stok :";
-    cin >> daftar_produk[jml_produk].stok;
-    jml_produk++;
-    simpan_produk();
+    getline(cin, new_produk.nama);
+    for (int i = 0; i < jml_produk; i++)
+    {
+        if (daftar_produk[i].nama == new_produk.nama)
+        {
+            cout << "Masukan spesifikasi produk :";
+            getline(cin, new_produk.spesifikasi);
+            if (daftar_produk[i].spesifikasi == new_produk.spesifikasi)
+            {
+                idx = i;
+                cout << "Produk Sudah Tersedia!\n";
+                daftar_produk[idx].stok++;
+                simpan_produk();
+                break;
+            }
+        }
+    }
+    if (idx == -1)
+    {
+        if (new_produk.spesifikasi.empty())
+        {
+            cout << "Masukan spesifikasi produk baru :";
+            getline(cin, new_produk.spesifikasi);
+        }
+        cout << "Masukan harga produk : Rp.";
+        cin >> new_produk.harga;
+        cout << "Masukan jumlah stok :";
+        cin >> new_produk.stok;
+        daftar_produk[jml_produk].nama = new_produk.nama;
+        daftar_produk[jml_produk].spesifikasi = new_produk.spesifikasi;
+        daftar_produk[jml_produk].harga = new_produk.harga;
+        daftar_produk[jml_produk].stok = new_produk.stok;
+        jml_produk++;
+        simpan_produk();
+    }
 }
 
-void sorting(){
-    for(int i = 1; i < jml_produk; i++){
+void sorting()
+{
+    for (int i = 1; i < jml_produk; i++)
+    {
         produk key = daftar_produk[i];
         int j = i - 1;
 
-        //bandingkan harga
-        while(j >= 0 && daftar_produk[j].harga > key.harga) {
+        // bandingkan harga
+        while (j >= 0 && daftar_produk[j].harga > key.harga)
+        {
             daftar_produk[j + 1] = daftar_produk[j];
             j = j - 1;
         }
@@ -221,19 +259,20 @@ void tampilkan_produk()
     cin >> pilih_sorting;
     cin.ignore();
 
-    if(pilih_sorting == 'y' || pilih_sorting == 'Y'){
+    if (pilih_sorting == 'y' || pilih_sorting == 'Y')
+    {
         system("cls");
         sorting();
         cout << "========== DAFTAR PRODUK ==========" << endl;
         for (int i = 0; i < jml_produk; i++)
-    {
-        cout << i + 1 << "."
-             << daftar_produk[i].nama
-             << "|" << daftar_produk[i].spesifikasi
-             << "|" << fixed << setprecision(0) << daftar_produk[i].harga
-             << "|" << daftar_produk[i].stok << endl;
-    }
-    cout << "===================================" << endl;
+        {
+            cout << i + 1 << "."
+                 << daftar_produk[i].nama
+                 << "|" << daftar_produk[i].spesifikasi
+                 << "|" << fixed << setprecision(0) << daftar_produk[i].harga
+                 << "|" << daftar_produk[i].stok << endl;
+        }
+        cout << "===================================" << endl;
     }
     cout << "Tekan enter untuk kembali ke menu";
     cin.get();
@@ -325,7 +364,8 @@ void menu_utama()
     system("cls");
 }
 
-void search_produk() {
+void search_produk()
+{
     string cari;
     bool ditemukan = false;
 
@@ -333,8 +373,10 @@ void search_produk() {
     getline(cin, cari);
 
     cout.imbue(locale(cout.getloc(), new format_rupiah));
-    for (int i = 0; i < jml_produk; i++) {
-        if (daftar_produk[i].nama == cari) {
+    for (int i = 0; i < jml_produk; i++)
+    {
+        if (daftar_produk[i].nama == cari)
+        {
             cout << "\n=== PRODUK DITEMUKAN ===" << endl;
             cout << "Nama         : " << daftar_produk[i].nama << endl;
             cout << "Spesifikasi  : " << daftar_produk[i].spesifikasi << endl;
@@ -348,8 +390,8 @@ void search_produk() {
 
 int main()
 {
-muat_akun();
-muat_produk();
+    muat_akun();
+    muat_produk();
 
 // menu awal
 menu_awal:

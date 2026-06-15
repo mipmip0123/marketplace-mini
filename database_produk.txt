@@ -1,3 +1,3 @@
 mouse|enteng|1200000|2|
 Samsung S23 Ultra|SnapDragon |24000000|2|
-Evercross|lambat|500000|9|
+Evercross|lambat|500000|10|
