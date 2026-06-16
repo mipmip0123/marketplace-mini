@@ -399,10 +399,11 @@ void search_produk()
         if (toLower(daftar_produk[i].nama).find(cari) != string::npos)
         {
             cout << "\n=== PRODUK DITEMUKAN ===" << endl;
-            cout << "Nama         : " << daftar_produk[i].nama << endl;
-            cout << "Spesifikasi  : " << daftar_produk[i].spesifikasi << endl;
-            cout << "Harga        : Rp." << fixed << setprecision(0) << daftar_produk[i].harga << endl;
-            cout << "Stok         : " << daftar_produk[i].stok << endl;
+            cout << i + 1 << ".";
+            cout << " Nama         : " << daftar_produk[i].nama << endl;
+            cout << "   Spesifikasi  : " << daftar_produk[i].spesifikasi << endl;
+            cout << "   Harga        : Rp." << fixed << setprecision(0) << daftar_produk[i].harga << endl;
+            cout << "   Stok         : " << daftar_produk[i].stok << endl;
             ditemukan = true;
         }
     }

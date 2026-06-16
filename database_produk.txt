@@ -1,3 +1,6 @@
 mouse|enteng|1200000|2|
 Samsung S23 Ultra|SnapDragon |24000000|2|
 Evercross|lambat|500000|10|
+moula|lelet|20000|2|
+mouse ryzer|cepat|200000|2|
+Mouse Gaming|enak dan smooth|50000000|7|
