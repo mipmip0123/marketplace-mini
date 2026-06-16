@@ -376,6 +376,13 @@ void menu_utama()
     system("cls");
 }
 
+string toLower(string str) {
+    for(int i = 0; i < str.length(); i++) {
+        str[i] = tolower(str[i]);
+    }
+    return str;
+}
+
 void search_produk()
 {
     string cari;
@@ -384,10 +391,12 @@ void search_produk()
     cout << "Masukkan nama produk yang dicari : ";
     getline(cin, cari);
 
+    cari = toLower(cari);
+
     cout.imbue(locale(cout.getloc(), new format_rupiah));
     for (int i = 0; i < jml_produk; i++)
     {
-        if (daftar_produk[i].nama == cari)
+        if (toLower(daftar_produk[i].nama).find(cari) != string::npos)
         {
             cout << "\n=== PRODUK DITEMUKAN ===" << endl;
             cout << "Nama         : " << daftar_produk[i].nama << endl;
@@ -395,8 +404,10 @@ void search_produk()
             cout << "Harga        : Rp." << fixed << setprecision(0) << daftar_produk[i].harga << endl;
             cout << "Stok         : " << daftar_produk[i].stok << endl;
             ditemukan = true;
-            break;
         }
+    }
+    if(!ditemukan){
+        cout << "Produk tidak tersedia" << endl;
     }
 }
 
