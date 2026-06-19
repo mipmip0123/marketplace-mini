@@ -522,27 +522,40 @@ void search_produk()
 
     cout << "Masukkan nama produk yang dicari : ";
     getline(cin, cari);
-
     cari = toLower(cari);
 
+    int hasil_index[100];
+    int jml_hasil = 0;
+
     cout.imbue(locale(cout.getloc(), new format_rupiah));
+    cout << "================================================== PRODUK DITEMUKAN ==================================================" << endl;
+        cout << left << setw(4) << "| NO" << "|"
+         << setw(28) << "    NAMA   " << "|"
+         << setw(44) << "   \t\t\tSpesifikasi" << "|"
+         << setw(15) << "  Harga" << "|"
+         << setw(6)  << " Stok" << "|" << endl;
+    cout << "======================================================================================================================" << endl;
     for (int i = 0; i < jml_produk; i++)
     {
         if (toLower(daftar_produk[i].nama).find(cari) != string::npos)
         {
-            cout << "\n=== PRODUK DITEMUKAN ===" << endl;
-            cout << nomor++ << ".";
-            cout << " Nama         : " << daftar_produk[i].nama << endl;
-            cout << "   Spesifikasi  : " << daftar_produk[i].spesifikasi << endl;
-            cout << "   Harga        : Rp." << fixed << setprecision(0) << daftar_produk[i].harga << endl;
-            cout << "   Stok         : " << daftar_produk[i].stok << endl;
+            cout << "|" << right << setw(2) << nomor++ << "." << "|"
+                 << setw(28) << left << daftar_produk[i].nama << "|"
+                 << setw(60) << daftar_produk[i].spesifikasi << "|" << "Rp."
+                 << setw(12) << fixed << setprecision(0) << daftar_produk[i].harga << "|"
+                 << setw(6) << daftar_produk[i].stok << "|" << endl;
+
+            hasil_index[jml_hasil++] = i;
             ditemukan = true;
         }
     }
+    cout << "======================================================================================================================" << endl;
+
     if(!ditemukan){
         cout << "Produk tidak tersedia" << endl;
         return;
     }
+
     char pilihTambah;
     cout << "\nApakah Anda ingin menambahkan produk ke keranjang? (y/t): ";
     cin >> pilihTambah;
@@ -550,46 +563,35 @@ void search_produk()
 
     if(pilihTambah == 'y' || pilihTambah == 'Y')
     {
-        string nama;
-        int jumlah;
+        int pilih_nomor, jumlah;
 
-        cout << "Produk mana yang ingin ditambahkan: ";
-        getline(cin, nama);
+        cout << "Masukan Nomor Produk: ";
+        cin >> pilih_nomor;
+        cin.ignore();
+
+        if(pilih_nomor < 1 || pilih_nomor > jml_hasil){
+            cout << "Nomor tidak valid!" << endl;
+            return;
+        }
 
         cout << "Jumlah: ";
         cin >> jumlah;
         cin.ignore();
 
-        for(int i = 0; i < jml_produk; i++)
-        {
-            if (jumlah > daftar_produk[i].stok)
-            {
-                cout << "Pembelian telah mencapai batas maksimum!\n";
-                return;
-            }
-
-            keranjang[jml_keranjang].namaProduk = nama;
-            keranjang[jml_keranjang].jumlah = jumlah;
-            keranjang[jml_keranjang].harga = daftar_produk[i].harga;
-
-            daftar_produk[i].stok -= jumlah;
-            simpan_produk();
-
-            jml_keranjang++;
-
-            cout << "produk " << nama << " dengan jumlah " << jumlah << " sudah ditambahkan ke dalam keranjang.\n";
-            
-            char lanjut;
-            cout << "ingin melanjutkan pencarian? (y/t): ";
-            cin >> lanjut;
-            cin.ignore();
-
-            if (lanjut == 'y' || lanjut == 'Y')
-            {
-                search_produk();
-            }
+        int idx = hasil_index[pilih_nomor -1];
+        if(jumlah > daftar_produk[idx].stok) {
+            cout << "pembelian melebehi stok" << endl;
             return;
         }
+
+        keranjang[jml_keranjang].namaProduk = daftar_produk[idx].nama;
+        keranjang[jml_keranjang].jumlah = jumlah;
+        keranjang[jml_keranjang].harga = daftar_produk[idx].harga;
+
+        jml_keranjang++;
+
+        cout << "Produk " << daftar_produk[idx].nama << "dengan jumlah " << jumlah << "sudah ditambahkan ke keranjang." << endl;
+
     }
     cout << "tekan enter untuk kembali";
     cin.get();
@@ -705,7 +707,12 @@ void tampil_riwayat()
 //Function Menu Utama Lihat Keranjang
 void menu_keranjang()
 {
-    cout << "====== KERANJANG  BELANJA ======" << endl;
+     cout << "========================== KERANJANG BELANJA ==========================" << endl;
+     cout << left << setw(5) << "| NO" << "|"
+         << setw(28) << "    NAMA   " << "|"
+         << setw(15) << "    Jumlah" << "|"
+         << setw(19) << "    Harga" << "|" << endl;
+    cout << "=======================================================================" << endl;
 
     if (jml_keranjang == 0)
     {
@@ -713,10 +720,21 @@ void menu_keranjang()
     }
     else
     {
+        double total = 0;
         for (int i = 0; i < jml_keranjang; i++)
         {
-            cout << i + 1 << ". " << keranjang[i].namaProduk << " | Jumlah: " << keranjang[i].jumlah << " | Harga: Rp." << keranjang[i].harga << " | Total: Rp." << keranjang[i].harga * keranjang[i].jumlah << endl;
+            double subtotal = keranjang[i].harga * keranjang[i].jumlah;
+
+            cout << "| " << right << setw(2) << (i + 1) << "." << "|" 
+                 << setw(28) << left << keranjang[i].namaProduk << "|\t " 
+                 << setw(9) << keranjang[i].jumlah << "| Rp." 
+                 << setw(15) << fixed << subtotal << "|" << endl;
+                 
+                 total += keranjang[i].harga * keranjang[i].jumlah;
         }
+        cout << "=======================================================================" << endl;
+        cout << setw(29) << "|\t\t\tTOTAL" << " = Rp." << fixed << setw(15) << total << "|" << endl;
+        cout << "=======================================================================" << endl;
     }
     cout << "================================" << endl;
     cout << "|   1. Tambah Barang           |" << endl;
@@ -750,7 +768,6 @@ void tambah_keranjang()
             keranjang[jml_keranjang].jumlah = jumlah;
             keranjang[jml_keranjang].harga = daftar_produk[i].harga;
 
-            daftar_produk[i].stok -= jumlah;
             simpan_produk();
 
             jml_keranjang++;
