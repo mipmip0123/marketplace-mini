@@ -124,10 +124,11 @@ void menu_penjual()
     cout << "======= MENU ADMIN =======" << endl;
     cout << "|  1. Tambah Barang      |" << endl;
     cout << "|  2. Hapus Barang       |" << endl;
-    cout << "|  3. Lihat data barang  |" << endl;
-    cout << "|  4. Lihat Antrian      |" << endl;
-    cout << "|  5. Proses Pengiriman  |" << endl;
-    cout << "|  6. Keluar             |" << endl;
+    cout << "|  3. Edit Harga Barang  |" << endl;
+    cout << "|  4. Lihat data barang  |" << endl;
+    cout << "|  5. Lihat Antrian      |" << endl;
+    cout << "|  6. Proses Pengiriman  |" << endl;
+    cout << "|  7. Keluar             |" << endl;
     cout << "==========================" << endl;
     cout << "Masukkan pilihan anda : ";
     cin >> pilih;
@@ -321,6 +322,95 @@ void tambah_produk()
         jml_produk++;
         simpan_produk();
     }
+}
+
+//Function Edit harga produk
+void edit_harga_produk()
+{
+    if (jml_produk == 0)
+    {
+        cout << "Tidak ada produk yang tersedia untuk diedit.\n";
+        return;
+    }
+
+    cout.imbue(locale(cout.getloc(), new format_rupiah));
+    cout << "=== EDIT HARGA PRODUK ===\n";
+    for (int i = 0; i < jml_produk; i++)
+    {
+        cout << i + 1 << ". " << daftar_produk[i].nama 
+             << " [Harga Saat Ini: Rp." << fixed << setprecision(0) << daftar_produk[i].harga << "]\n";
+    }
+
+    int nomor;
+    cout << "Masukkan nomor produk yang ingin diubah harganya: ";
+    cin >> nomor;
+    cin.ignore();
+
+    if (nomor < 1 || nomor > jml_produk)
+    {
+        cout << "Nomor tidak valid!\n";
+        return;
+    }
+
+    double harga_baru;
+    cout << "Masukkan harga baru untuk " << daftar_produk[nomor - 1].nama << " : Rp.";
+    cin >> harga_baru;
+    cin.ignore();
+
+    if (harga_baru < 0)
+    {
+        cout << "Harga tidak valid (tidak boleh minus)!\n";
+        return;
+    }
+
+    daftar_produk[nomor - 1].harga = harga_baru;
+    simpan_produk();
+    cout << "Harga produk berhasil diperbarui!\n";
+    cout << "Tekan enter untuk melanjutkan...";
+    cin.get();
+    system("cls");
+}
+
+//Function Hapus Produk
+void hapus_produk()
+{
+    if (jml_produk == 0)
+    {
+        cout << "Tidak ada produk yang tersedia untuk dihapus.\n";
+        return;
+    }
+
+    cout << "=== HAPUS PRODUK ===\n";
+    for (int i = 0; i < jml_produk; i++)
+    {
+        cout << i + 1 << ". " << daftar_produk[i].nama << "\n";
+    }
+
+    int nomor;
+    cout << "Masukkan nomor produk yang ingin dihapus: ";
+    cin >> nomor;
+    cin.ignore();
+
+    if (nomor < 1 || nomor > jml_produk)
+    {
+        cout << "Nomor tidak valid!\n";
+        return;
+    }
+
+    string nama_dihapus = daftar_produk[nomor - 1].nama;
+
+    // Menggeser sisa elemen array ke kiri
+    for (int i = nomor - 1; i < jml_produk - 1; i++)
+    {
+        daftar_produk[i] = daftar_produk[i + 1];
+    }
+    jml_produk--;
+
+    simpan_produk();
+    cout << "Produk '" << nama_dihapus << "' berhasil dihapus!\n";
+    cout << "Tekan enter untuk melanjutkan...";
+    cin.get();
+    system("cls");
 }
 
 void sorting()
