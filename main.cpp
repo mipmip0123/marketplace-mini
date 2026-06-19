@@ -132,6 +132,7 @@ void menu_penjual()
     cout << "==========================" << endl;
     cout << "Masukkan pilihan anda : ";
     cin >> pilih;
+    cin.ignore();
     system("cls");
 }
 
@@ -337,8 +338,7 @@ void edit_harga_produk()
     cout << "=== EDIT HARGA PRODUK ===\n";
     for (int i = 0; i < jml_produk; i++)
     {
-        cout << i + 1 << ". " << daftar_produk[i].nama 
-             << " [Harga Saat Ini: Rp." << fixed << setprecision(0) << daftar_produk[i].harga << "]\n";
+        cout << i + 1 << ". " << daftar_produk[i].nama  << " [Harga Saat Ini: Rp." << fixed << setprecision(0) << daftar_produk[i].harga << "]\n";
     }
 
     int nomor;
@@ -1021,10 +1021,10 @@ menu_awal:
             break;
             break;
         }
-    } while (pilihan_awal != 3);
+    } while (pilihan_awal != '3');
 
     // menu penjual
-menu_penjual:
+    menu_penjual:
     do
     {
         menu_penjual();
@@ -1034,28 +1034,38 @@ menu_penjual:
             tambah_produk();
             break;
         case 2:
+            hapus_produk();
             break;
         case 3:
-            tampilkan_produk();
+            edit_harga_produk();
             break;
         case 4:
-            lihat_antrian();
+            tampilkan_produk();
             break;
         case 5:
-            dequeue();
+            lihat_antrian();
+            goto menu_penjual;
             break;
         case 6:
-            system("cls");
+            dequeue();
             break;
-
+        case 7:
+            cout << "============================****=============================" << endl;
+            cout << "|              Terima Kasih Atas Kerjasamanya                |" << endl;
+            cout << "============================****=============================";
+            cin.get();
+            system("cls");
+            goto menu_awal;
         default:
-            cout << "Pilihan tidak tersedia1\n";
+            cout << "Pilihan tidak tersedia!\n";
+            cin.get();
+            goto menu_penjual;
             break;
         }
-    } while (pilih != 4);
+    } while (pilih != '7');
 
     // menu pembeli
-    menu_login:
+menu_login:
     do
     {
         menu_login_buyer();
@@ -1071,16 +1081,20 @@ menu_penjual:
 
             if (login(user, pass))
             {
-                cout << "Login berhasil" << endl;
-                cout << "Selamat berbelanja" << endl;
+                cout << "============================****=============================" << endl;
+                cout << "|                      LOGIN BERHASIL!                      |" << endl;
+                cout << "|                    SELAMAT BERBELANJA                     |" << endl;
+                cout << "============================****=============================";
                 cin.get();
                 system("cls");
                 goto menu_utama;
             }
             else
             {
-                cout << "Login Gagal" << endl;
-                cout << "Silahkan coba lagi" << endl;
+                cout << "============================****=============================" << endl;
+                cout << "|                       LOGIN GAGAL!                        |" << endl;
+                cout << "|                    SILAHKAN COBA LAGI                     |" << endl;
+                cout << "============================****=============================";
                 cin.get();
                 system("cls");
                 goto menu_login;
@@ -1094,7 +1108,9 @@ menu_penjual:
                 goto menu_login;
             break;
         case '3':
-            return 0;
+            system("cls");
+            goto menu_awal;
+            break;
 
         default:
             cout << "============================****=============================" << endl;
@@ -1153,7 +1169,12 @@ menu_utama:
             barang_sampai();
             break;
         case 6:
-            cout << "\nTerimakasih" << endl;
+            cout << "============================****=============================" << endl;
+            cout << "|               TERIMA KASIH SUDAH BERBELANJA               |" << endl;
+            cout << "============================****=============================";
+            cin.get();
+            system("cls");
+            goto menu_awal;
             break;
 
         default:
