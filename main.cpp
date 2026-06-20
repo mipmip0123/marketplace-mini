@@ -608,7 +608,13 @@ string getWaktu()
 {
     time_t now = time(0);
     char *dt = ctime(&now);
-    return string(dt);
+    string waktu(dt);
+
+    //hapus newline bawaan ctime
+    if(!waktu.empty() && waktu[waktu.length() - 1] == '\n') {
+        waktu.erase(waktu.length() - 1);
+    }
+    return waktu;
 }
 
 void search_produk()
@@ -793,7 +799,7 @@ void tampil_riwayat()
         cout << "Produk  : " << temp->namaProduk << endl;
         cout << "Jumlah  : " << temp->jumlah << endl;
         cout << "Total   : Rp. " << temp->totalHarga << endl;
-        cout << "Waktu   : " << temp->waktu;
+        cout << "Waktu   : " << temp->waktu << endl;
         cout << "Status  : " << temp->status << endl;
         cout << "================================" << endl;
 
