@@ -335,11 +335,18 @@ void edit_harga_produk()
     }
 
     cout.imbue(locale(cout.getloc(), new format_rupiah));
-    cout << "=== EDIT HARGA PRODUK ===\n";
+    cout << "================= EDIT HARGA PRODUK =================" << endl;
+     cout << left << setw(4) << "| NO" << "|"
+          << setw(28) << "    NAMA   " << "|"
+          << setw(18) << "  Harga Saat Ini" << "|" << endl;
+    cout << "=====================================================" << endl;
     for (int i = 0; i < jml_produk; i++)
     {
-        cout << i + 1 << ". " << daftar_produk[i].nama  << " [Harga Saat Ini: Rp." << fixed << setprecision(0) << daftar_produk[i].harga << "]\n";
+        cout << "|" << right << setw(2) << i + 1 << "." << "|"
+             << setw(28) << left << daftar_produk[i].nama << "| Rp."
+             << setw(14) << fixed << setprecision(0) << daftar_produk[i].harga << "|" << endl;
     }
+    cout << "=====================================================" << endl;
 
     int nomor;
     cout << "Masukkan nomor produk yang ingin diubah harganya: ";

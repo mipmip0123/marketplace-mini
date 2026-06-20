@@ -5,7 +5,7 @@ Vivo V30|RAM 12GB ROM 512GB Kamera 50MP Snapdragon 7 Gen 3|6999000|6|
 iPhone 15|RAM 6GB ROM 128GB Kamera 48MP Super Retina XDR|12999000|5|
 iPhone 15 Pro|RAM 8GB ROM 256GB Chip A17 Pro Titanium|18999000|3|
 Samsung Galaxy S24 Ultra|RAM 12GB ROM 512GB Kamera 200MP Snapdragon 8 Gen 3|21999000|4|
-Xiaomi 14|RAM 12GB ROM 512GB Kamera Leica Snapdragon 8 Gen 3|11999000|7|
+Xiaomi 14|RAM 12GB ROM 512GB Kamera Leica Snapdragon 8 Gen 3|1000000|7|
 Realme 13 Pro+|RAM 12GB ROM 512GB Kamera 50MP Sony Periscope|6499000|9|
 Infinix GT 20 Pro|RAM 12GB ROM 256GB AMOLED 144Hz Dimensity 8200|4599000|11|
 POCO X6 Pro|RAM 12GB ROM 512GB Dimensity 8300 Ultra AMOLED 120Hz|5499000|10|
