@@ -807,22 +807,20 @@ void tampil_riwayat()
     }
 }
 
-//Function Menu Utama Lihat Keranjang
-void menu_keranjang()
+void tampil_keranjang()
 {
-     cout << "========================== KERANJANG BELANJA ==========================" << endl;
-     cout << left << setw(5) << "| NO" << "|"
-         << setw(28) << "    NAMA   " << "|"
-         << setw(15) << "    Jumlah" << "|"
-         << setw(19) << "    Harga" << "|" << endl;
-    cout << "=======================================================================" << endl;
-
     if (jml_keranjang == 0)
     {
         cout << "Maaf, keranjang masih kosong!\n";
     }
     else
     {
+         cout << "========================== KERANJANG BELANJA ==========================" << endl;
+         cout << left << setw(5) << "| NO" << "|"
+         << setw(28) << "    NAMA   " << "|"
+         << setw(15) << "    Jumlah" << "|"
+         << setw(19) << "    Harga" << "|" << endl;
+         cout << "=======================================================================" << endl;
         double total = 0;
         for (int i = 0; i < jml_keranjang; i++)
         {
@@ -839,11 +837,18 @@ void menu_keranjang()
         cout << setw(29) << "|\t\t\tTOTAL" << " = Rp." << fixed << setw(15) << total << "|" << endl;
         cout << "=======================================================================" << endl;
     }
+}
+
+//Function Menu Utama Lihat Keranjang
+void menu_keranjang()
+{
+    tampil_keranjang();
     cout << "================================" << endl;
-    cout << "|   1. Tambah Barang           |" << endl;
+    cout << "|   1. Tambah Jumlah Barang    |" << endl;
     cout << "|   2. Hapus Barang            |" << endl;
     cout << "|   3. Checkout                |" << endl;
-    cout << "|   4. Kembali                 |" << endl;
+    cout << "|   4. Undo Barang dihapus     |" << endl;
+    cout << "|   5. Kembali                 |" << endl;
     cout << "================================" << endl;
     cout << "Masukkan Pilihan : ";
     cin >> pilih;
@@ -851,36 +856,33 @@ void menu_keranjang()
     system("cls");
 }
 
-void tambah_keranjang()
-{
-    string nama;
-    int jumlah;
+struct stack_keranjang {
+    Keranjang data[100];
+    int top;
+} sKeranjang;
 
-    cout << "Masukkan nama produk: ";
-    getline(cin, nama);
+void initstack_keranjang() {
+    sKeranjang.top = -1;
+}
 
-    cout << "Masukkan jumlah: ";
-    cin >> jumlah;
-    cin.ignore();
-
-    for (int i = 0; i < jml_produk; i++)
-    {
-        if (daftar_produk[i].nama == nama)
-        {
-            keranjang[jml_keranjang].namaProduk = nama;
-            keranjang[jml_keranjang].jumlah = jumlah;
-            keranjang[jml_keranjang].harga = daftar_produk[i].harga;
-
-            simpan_produk();
-
-            jml_keranjang++;
-
-            cout << "Produk berhasil ditambahkan ke dalam keranjang\n";
-            return;
-        }
+void push_keranjang(Keranjang k) {
+    if(sKeranjang.top < 99) {
+        sKeranjang.data[++sKeranjang.top] = k;
     }
+}
 
-    cout << "Produk tidak ditemukan\n";
+Keranjang pop_keranjang(int index_pop) {
+    if(index_pop < 0 || index_pop > sKeranjang.top) {
+        cout << "Nomor tidak valid" << endl;
+        return Keranjang();
+    }
+    Keranjang kembali = sKeranjang.data[index_pop];
+
+    for(int i = index_pop; i < sKeranjang.top; i++) {
+        sKeranjang.data[i] = sKeranjang.data[i + 1];
+    }
+    sKeranjang.top--;
+    return kembali;
 }
 
 void hapus_keranjang()
@@ -891,10 +893,12 @@ void hapus_keranjang()
         return;
     }
 
+    tampil_keranjang();
     int index;
     cout << "Masukkan nomor barang yang ingin dihapus: ";
     cin >> index;
     cin.ignore();
+    system("cls");
 
     if (index < 1 || index > jml_keranjang)
     {
@@ -902,12 +906,13 @@ void hapus_keranjang()
         return;
     }
 
+    push_keranjang(keranjang[index - 1]);
+
     for (int i = 0; i < jml_produk; i++)
     {
         if (daftar_produk[i].nama == keranjang[index - 1].namaProduk)
         {
             daftar_produk[i].stok += keranjang[index - 1].jumlah;
-            simpan_produk();
             break;
         }
     }
@@ -920,6 +925,71 @@ void hapus_keranjang()
     jml_keranjang--;
 
     cout << "Barang berhasil dihapus!\n";
+}
+
+void undo_hapus_keranjang() {
+    if(sKeranjang.top < 0) {
+        cout << "Tidak ada barang yang bisa di-undo." << endl;
+        return;
+    }
+
+         cout << "============================ BARANG DIHAPUS ===========================" << endl;
+         cout << left << setw(5) << "| NO" << "|"
+         << setw(28) << "    NAMA   " << "|"
+         << setw(15) << "    Jumlah" << "|"
+         << setw(19) << "    Harga" << "|" << endl;
+         cout << "=======================================================================" << endl;
+         for(int i = 0; i <= sKeranjang.top; i++) {
+                cout << "| " << right << setw(2) << (i + 1) << "." << "|" 
+                 << setw(28) << left << sKeranjang.data[i].namaProduk << "|\t " 
+                 << setw(9) << sKeranjang.data[i].jumlah << "| Rp." 
+                 << setw(15) << fixed << setprecision(0) << sKeranjang.data[i].harga << "|" << endl;    
+         }
+         cout << "=======================================================================" << endl;
+         
+         int pilih_undo;
+         cout << "Pilih nomor barang untuk dikembalikan : ";
+         cin >> pilih_undo;
+         cin.ignore();
+
+         if (pilih_undo < 1 || pilih_undo > sKeranjang.top+1) {
+            cout << "Nomor tidak valid";
+            return;
+         }
+
+         Keranjang kembali = pop_keranjang(pilih_undo - 1);
+         keranjang[jml_keranjang++] = kembali;
+         cout << "Barang " << kembali.namaProduk << " Dikembalikan  ke keranjang!";
+         cin.get();
+         system("cls");
+}
+
+void tambah_keranjang()
+{
+    if (jml_keranjang == 0) {
+        cout << "keranjang kosong!" << endl;
+        return;
+    }
+
+    tampil_keranjang();
+    int index , jumlah;
+    cout << "Masukan nomor produk di keranjang : ";
+    cin >> index;
+    cin.ignore();
+
+    if(index < 1 || index > jml_keranjang) {
+        cout << "Nomor tidak Valid!";
+        return;
+    }
+
+    cout << "Masukan Jumlah tambahan : ";
+    cin >> jumlah;
+    cin.ignore();
+
+    keranjang[index - 1].jumlah += jumlah;
+    cout << "Produk berhasil ditambahkkan";
+    cin.get();
+    system("cls");
 }
 
 void Checkout()
@@ -957,28 +1027,12 @@ void Checkout()
     cout << "Checkout berhasil!\n";
 }
 
-void tampil_keranjang()
-{
-    if (jml_keranjang == 0)
-    {
-        cout << "Keranjang ksong!\n";
-        return;
-    }
-
-    for (int i = 0; i < jml_keranjang; i++)
-    {
-        cout << i+1 << ". "
-             << keranjang[i].namaProduk
-             << "x " << keranjang[i].jumlah
-             << endl;
-    }
-}
-
 int main()
 {
     muat_akun();
     muat_produk();
     muat_nota();
+    initstack_keranjang();
 
 // menu awal
 menu_awal:
@@ -1170,8 +1224,12 @@ menu_utama:
                     case 3:
                     Checkout();
                     break;
+
+                    case 4:
+                    undo_hapus_keranjang();
+                    break;
                 }
-            }while (pilihkeranjang !=4);
+            }while (pilihkeranjang !=5);
 
             break;
         }
