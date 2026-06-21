@@ -286,7 +286,6 @@ void tambah_produk()
         return;
     }
 
-    cin.ignore();
     cout << "Masukan nama produk :";
     getline(cin, new_produk.nama);
     for (int i = 0; i < jml_produk; i++)
@@ -387,11 +386,23 @@ void hapus_produk()
         return;
     }
 
-    cout << "=== HAPUS PRODUK ===\n";
+cout.imbue(locale(cout.getloc(), new format_rupiah));
+    cout << "==================================================== HAPUS PRODUK =====================================================" << endl;
+    cout << left << setw(5) << "| NO" << "|"
+         << setw(28) << "    NAMA   " << "|"
+         << setw(45) << "   \t\t\tSpesifikasi" << "|"
+         << setw(15) << "  Harga" << "|"
+         << setw(6)  << " Stok" << "|" << endl;
+    cout << "=======================================================================================================================" << endl;
     for (int i = 0; i < jml_produk; i++)
     {
-        cout << i + 1 << ". " << daftar_produk[i].nama << "\n";
+        cout << "| " << right << setw(2) << (i + 1) << "." << "|" 
+             << setw(28) << left << daftar_produk[i].nama << "|"
+             << setw(60) << daftar_produk[i].spesifikasi << "|" << "Rp."
+             << setw(12) << fixed << setprecision(0) << daftar_produk[i].harga << "|"
+             << setw(6) << daftar_produk[i].stok << "|" << endl;
     }
+    cout << "=======================================================================================================================" << endl;
 
     int nomor;
     cout << "Masukkan nomor produk yang ingin dihapus: ";
