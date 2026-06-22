@@ -35,4 +35,4 @@ Google Pixel 8|RAM 8GB ROM 128GB Tensor G3 Kamera 50MP|10999000|4|
 Google Pixel 8 Pro|RAM 12GB ROM 256GB Tensor G3 Kamera 50MP|14999000|3|
 Nothing Phone 2a|RAM 12GB ROM 256GB AMOLED 120Hz Glyph Interface|5999000|5|
 Honor X9b|RAM 12GB ROM 256GB AMOLED 120Hz Snapdragon 6 Gen 1|4999000|8|
-Huawei Nova 12i|RAM 8GB ROM 256GB Kamera 108MP Snapdragon 680|5290000|7|
+Huawei Nova 12i|RAM 8GB ROM 256GB Kamera 108MP Snapdragon 680|5290000|8|

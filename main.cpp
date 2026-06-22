@@ -107,7 +107,9 @@ bool login(string user, string pass)
 
 void menu_awal()
 {
-    cout << "======= MENU AWAL =======" << endl;
+    cout << "=========================" << endl;
+    cout << "|       MENU AWAL       |" << endl;
+    cout << "=========================" << endl;
     cout << "|  1.Sebagai Penjual    |" << endl;
     cout << "|  2.Sebagai Pembeli    |" << endl;
     cout << "|  3.keluar             |" << endl;
@@ -144,9 +146,11 @@ void simpan_produk()
     ofstream file("database_produk.txt");
     if (!file)
     {
-        cout << "=====================================" << endl;
-        cout << "Gagal Membuka file untuk menyimpan!\n";
-        cout << "=====================================" << endl;
+        cout << "=======================================" << endl;
+        cout << "| Gagal Membuka file untuk menyimpan! | " << endl;
+        cout << "=======================================";
+        cin.get();
+        system("cls");
         return;
     }
     for (int i = 0; i < jml_produk; i++)
@@ -164,9 +168,11 @@ void simpan_nota()
     ofstream file("database_nota.txt");
     if(!file)
     {
-        cout << "====================================" << endl;
-        cout << "Gagal Membuka file untuk menyimpan!\n";
-        cout << "====================================" << endl;
+        cout << "=======================================" << endl;
+        cout << "| Gagal Membuka file untuk menyimpan! |" << endl;
+        cout << "=======================================";
+        cin.get();
+        system("cls");
         return;
     }
     Nota *temp = head;
@@ -209,9 +215,11 @@ int muat_produk()
     ifstream file("database_produk.txt");
     if (!file)
     {
-        cout << "=================================================" << endl;
-        cout << "Database belum ada, mulai dengan data default.\n";
-        cout << "=================================================" << endl;
+        cout << "==================================================" << endl;
+        cout << "| Database belum ada, mulai dengan data default. |" << endl;
+        cout << "==================================================";
+        cin.get();
+        system("cls");
         return 0;
     }
     jml_produk = 0;
@@ -287,9 +295,11 @@ void tambah_produk()
 
     if (jml_produk >= MAX_PRODUK)
     {
-        cout << "==================================================" << endl;
-        cout << "Database penuh tidak dapat menambah produk lagi\n";
-        cout << "==================================================" << endl;
+        cout << "===================================================" << endl;
+        cout << "| Database penuh tidak dapat menambah produk lagi |" << endl;
+        cout << "===================================================";
+        cin.get();
+        system("cls");
         return;
     }
 
@@ -304,7 +314,11 @@ void tambah_produk()
             if (daftar_produk[i].spesifikasi == new_produk.spesifikasi)
             {
                 idx = i;
-                cout << "Produk Sudah Tersedia!\n";
+                cout << "==========================" << endl;
+                cout << "| Produk Sudah Tersedia! |" << endl;
+                cout << "==========================";
+                cin.get();
+                system("cls");
                 daftar_produk[idx].stok++;
                 simpan_produk();
                 break;
@@ -345,7 +359,9 @@ void edit_harga_produk()
     }
 
     cout.imbue(locale(cout.getloc(), new format_rupiah));
-    cout << "================= EDIT HARGA PRODUK =================" << endl;
+    cout << "=====================================================" << endl;
+    cout << "|                 EDIT HARGA PRODUK                 |" << endl;
+    cout << "=====================================================" << endl;
      cout << left << setw(4) << "| NO" << "|"
           << setw(28) << "    NAMA   " << "|"
           << setw(18) << "  Harga Saat Ini" << "|" << endl;
@@ -498,7 +514,9 @@ void tampilkan_produk()
         return;
     }
     cout.imbue(locale(cout.getloc(), new format_rupiah));
-    cout << "==================================================== DAFTAR PRODUK ====================================================" << endl;
+    cout << "=======================================================================================================================" << endl;
+    cout << "|                                              D A F T A R  P R O D U K                                               |" << endl;
+    cout << "=======================================================================================================================" << endl;
     cout << left << setw(5) << "| NO" << "|"
          << setw(28) << "    NAMA   " << "|"
          << setw(45) << "   \t\t\tSpesifikasi" << "|"
@@ -525,7 +543,9 @@ void tampilkan_produk()
     {
         system("cls");
         sorting();
-    cout << "==================================================== DAFTAR PRODUK ====================================================" << endl;
+    cout << "=======================================================================================================================" << endl;
+    cout << "|                                              D A F T A R  P R O D U K                                               |" << endl;
+    cout << "=======================================================================================================================" << endl;
     cout << left << setw(5) << "| NO" << "|"
          << setw(28) << "    NAMA   " << "|"
          << setw(45) << "   \t\t\tSpesifikasi" << "|"
@@ -544,7 +564,7 @@ void tampilkan_produk()
 
     cout << "=======================================================================================================================" << endl;
     }
-    cout << "Tekan enter untuk kembali ke menu";
+    cout << "\t\t\t\t\tTekan enter untuk kembali ke menu";
     cin.get();
     system("cls");
 }
@@ -698,7 +718,9 @@ void search_produk()
     int jml_hasil = 0;
 
     cout.imbue(locale(cout.getloc(), new format_rupiah));
-    cout << "================================================== PRODUK DITEMUKAN ==================================================" << endl;
+    cout << "======================================================================================================================" << endl;
+    cout << "|                                           P R O D U K  D I T E M U K A N                                           |" << endl;
+    cout << "======================================================================================================================" << endl;
         cout << left << setw(4) << "| NO" << "|"
          << setw(28) << "    NAMA   " << "|"
          << setw(44) << "   \t\t\tSpesifikasi" << "|"
@@ -848,7 +870,9 @@ void lihat_antrian()
         return;
     }
 
-    cout << "===================== ANTRIAN =====================" << endl;
+    cout << "===================================================" << endl;
+    cout << "|                   A N T R I A N                 |" << endl;
+    cout << "===================================================" << endl;
          cout << left << setw(5) << "| NO" << "|"
          << setw(28) << "    NAMA   " << "|"
          << setw(15) << "    Jumlah" << "|" << endl;
@@ -928,13 +952,15 @@ void tampil_riwayat()
     cout.imbue(locale(cout.getloc(), new format_rupiah));
     while (temp !=NULL)
     {
-        cout << "======== NOTA PEMBELIAN ========" << endl;
+        cout << "==================================" << endl;
+        cout << "|   N O T A  P E M B E L I A N   |" << endl;
+        cout << "==================================" << endl;
         cout << "Produk  : " << temp->namaProduk << endl;
         cout << "Jumlah  : " << temp->jumlah << endl;
         cout << "Total   : Rp. " << fixed << setprecision(0) << temp->totalHarga << endl;
         cout << "Waktu   : " << temp->waktu << endl;
         cout << "Status  : " << temp->status << endl;
-        cout << "================================" << endl;
+        cout << "==================================" << endl;
 
         temp = temp->next;
     }
@@ -952,7 +978,9 @@ void tampil_keranjang()
     }
     else
     {
-         cout << "========================== KERANJANG BELANJA ==========================" << endl;
+         cout << "=======================================================================" << endl;
+         cout << "|                  K E R A N J A N G  B E L A N J A                   |" << endl;
+         cout << "=======================================================================" << endl;
          cout << left << setw(5) << "| NO" << "|"
          << setw(28) << "    NAMA   " << "|"
          << setw(15) << "    Jumlah" << "|"
