@@ -311,17 +311,20 @@ void tambah_produk()
         {
             cout << "Masukan spesifikasi produk :";
             getline(cin, new_produk.spesifikasi);
+            system("cls");
             if (daftar_produk[i].spesifikasi == new_produk.spesifikasi)
             {
                 idx = i;
                 char pilih_stok;
                 int tambah_stok;
-                cout << "==========================" << endl;
-                cout << "| Produk Sudah Tersedia! |" << endl;
-                cout << "==========================" << endl;
-                cout << "Apakah anda ingin menambahkan stok produk ke toko? (y/t): ";
+                cout << "============================================" << endl;
+                cout << "|          Produk Sudah Tersedia!          |" << endl;
+                cout << "|  Apakah anda ingin menambahkan ke Stok?  |" << endl;
+                cout << "============================================" << endl;
+                cout << "\t  pilihan anda (y/t): ";
                 cin >> pilih_stok;
                 cin.ignore();
+                system("cls");
 
                 if(pilih_stok == 'y' || pilih_stok == 'Y')
                 {
@@ -331,9 +334,15 @@ void tambah_produk()
 
                     daftar_produk[idx].stok += tambah_stok;
 
-                    cout << "======================================================================================" << endl;
-                    cout << "Stok produk " << daftar_produk[idx].nama << " sebanyak" << tambah_stok << " berhasil ditambahkan!" << endl;
-                    cout << "Total produk sekarang: " << daftar_produk[idx].stok << endl;
+                    cout << "==================================================================================" << endl;
+                    cout << "|              S T O K  B E R H A S I L  D I T A M B A H K A N                   |" << endl;
+                    cout << "==================================================================================" << endl;
+                    cout << "| Stok Produk           : " << left << setw(55) << daftar_produk[idx].nama << "|" << endl;
+                    cout << "| Jumlah Ditambah       : " << setw(55) << tambah_stok << "|" << endl;
+                    cout << "| Total produk sekarang : " << setw(55) << daftar_produk[idx].stok << "|" << endl;
+                    cout << "==================================================================================";
+                    cin.get();
+                    system("cls");
 
                     simpan_produk();
                 }
@@ -341,9 +350,9 @@ void tambah_produk()
                 {
                     cout << "===============================" << endl;
                     cout << "| Penambahan stok dibatalkan! |" << endl;
-                    cout << "===============================" << endl;
+                    cout << "===============================";
+                    cin.get();
                 }
-                cin.get();
                 system("cls");
                 break;
             }
@@ -694,14 +703,16 @@ bool tambah_akun()
 // Function Menu Utama Pembeli
 void menu_utama()
 {
-    cout << "========= MENU PEMBELI =========" << endl;
+    cout << "================================" << endl;
+    cout << "|     M E N U  P E M B E L I   |" << endl;
+    cout << "================================" << endl;
     cout << "|    1. Tampilkan Produk       |" << endl;
     cout << "|    2. Searching Produk       |" << endl;
     cout << "|    3. Lihat Keranjang        |" << endl;
     cout << "|    4. Riwayat Pembelian      |" << endl;
     cout << "|    5. Barang Sudah Sampai    |" << endl;
     cout << "|    6. Keluar                 |" << endl;
-    cout << "===============================" << endl;
+    cout << "================================" << endl;
     cout << "Masukan pilihan anda : ";
     cin >> pilihan;
     cin.ignore();
@@ -1032,14 +1043,14 @@ void tampil_keranjang()
 void menu_keranjang()
 {
     tampil_keranjang();
-    cout << "================================" << endl;
-    cout << "|   1. Tambah Jumlah Barang    |" << endl;
-    cout << "|   2. Hapus Barang            |" << endl;
-    cout << "|   3. Checkout                |" << endl;
-    cout << "|   4. Undo Barang dihapus     |" << endl;
-    cout << "|   5. Kembali                 |" << endl;
-    cout << "================================" << endl;
-    cout << "Masukkan Pilihan : ";
+    cout << "\t\t================================" << endl;
+    cout << "\t\t|   1. Tambah Jumlah Barang    |" << endl;
+    cout << "\t\t|   2. Hapus Barang            |" << endl;
+    cout << "\t\t|   3. Checkout                |" << endl;
+    cout << "\t\t|   4. Undo Barang dihapus     |" << endl;
+    cout << "\t\t|   5. Kembali                 |" << endl;
+    cout << "\t\t================================" << endl;
+    cout << "\t\t\tMasukkan Pilihan : ";
     cin >> pilih;
     cin.ignore();
     system("cls");
@@ -1078,7 +1089,11 @@ void hapus_keranjang()
 {
     if (jml_keranjang == 0)
     {
-        cout << "Keranjang kosong!\n";
+        cout << "=====================" << endl;
+        cout << "| Keranjang kosong! |" << endl;
+        cout << "=====================";
+        cin.get();
+        system("cls");
         return;
     }
 
@@ -1091,7 +1106,11 @@ void hapus_keranjang()
 
     if (index < 1 || index > jml_keranjang)
     {
-        cout << "Nomor tidak valid!\n";
+        cout << "======================" << endl;
+        cout << "| Nomor tidak valid! |" << endl;
+        cout << "======================";
+        cin.get();
+        system("cls");
         return;
     }
 
@@ -1118,11 +1137,17 @@ void hapus_keranjang()
 
 void undo_hapus_keranjang() {
     if(sKeranjang.top < 0) {
-        cout << "Tidak ada barang yang bisa di-undo." << endl;
+        cout << "======================================" << endl;
+        cout << "| Tidak ada barang yang bisa di-undo |" << endl;
+        cout << "======================================";
+        cin.get();
+        system("cls");
         return;
     }
 
-         cout << "============================ BARANG DIHAPUS ===========================" << endl;
+         cout << "=======================================================================" << endl;
+         cout << "|                      B A R A N G  D I H A P U S                     |" << endl;
+         cout << "=======================================================================" << endl;
          cout << left << setw(5) << "| NO" << "|"
          << setw(28) << "    NAMA   " << "|"
          << setw(15) << "    Jumlah" << "|"
@@ -1244,7 +1269,9 @@ menu_awal:
         {
         case 1:
         menu_login_penjual:
-            cout << "======= MENU PENJUAL =======" << endl;
+            cout << "================================" << endl;
+            cout << "| V E R I F I K A S I  K O D E |" << endl;
+            cout << "================================" << endl;
             cout << "Masukkan Kode : ";
             getline(cin, kode_kode);
             system("cls");
