@@ -314,13 +314,37 @@ void tambah_produk()
             if (daftar_produk[i].spesifikasi == new_produk.spesifikasi)
             {
                 idx = i;
+                char pilih_stok;
+                int tambah_stok;
                 cout << "==========================" << endl;
                 cout << "| Produk Sudah Tersedia! |" << endl;
-                cout << "==========================";
+                cout << "==========================" << endl;
+                cout << "Apakah anda ingin menambahkan stok produk ke toko? (y/t): ";
+                cin >> pilih_stok;
+                cin.ignore();
+
+                if(pilih_stok == 'y' || pilih_stok == 'Y')
+                {
+                    cout << "Masukkan jumlah stok yang ingin ditambahkan: ";
+                    cin >> tambah_stok;
+                    cin.ignore();
+
+                    daftar_produk[idx].stok += tambah_stok;
+
+                    cout << "======================================================================================" << endl;
+                    cout << "Stok produk " << daftar_produk[idx].nama << " sebanyak" << tambah_stok << " berhasil ditambahkan!" << endl;
+                    cout << "Total produk sekarang: " << daftar_produk[idx].stok << endl;
+
+                    simpan_produk();
+                }
+                else
+                {
+                    cout << "===============================" << endl;
+                    cout << "| Penambahan stok dibatalkan! |" << endl;
+                    cout << "===============================" << endl;
+                }
                 cin.get();
                 system("cls");
-                daftar_produk[idx].stok++;
-                simpan_produk();
                 break;
             }
         }
