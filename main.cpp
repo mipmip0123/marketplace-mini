@@ -130,7 +130,8 @@ void menu_penjual()
     cout << "|  4. Lihat data barang  |" << endl;
     cout << "|  5. Lihat Antrian      |" << endl;
     cout << "|  6. Proses Pengiriman  |" << endl;
-    cout << "|  7. Keluar             |" << endl;
+    cout << "|  7. Edit Stok          |" << endl;
+    cout << "|  8. Keluar             |" << endl;
     cout << "==========================" << endl;
     cout << "Masukkan pilihan anda : ";
     cin >> pilih;
@@ -378,6 +379,82 @@ void tambah_produk()
     }
 }
 
+
+void edit_stok() {
+    if(jml_produk == 0) {
+        cout << "=============================================" << endl;
+        cout << "|      T I D A K  A D A  P R O D U K        |" << endl;
+        cout << "=============================================";
+        cin.get();
+        system("cls");
+        return; 
+    }
+    cout.imbue(locale(cout.getloc(), new format_rupiah));
+    cout << "=======================================================================================================================" << endl;
+    cout << "|                                              D A F T A R  P R O D U K                                               |" << endl;
+    cout << "=======================================================================================================================" << endl;
+    cout << left << setw(5) << "| NO" << "|"
+         << setw(28) << "    NAMA   " << "|"
+         << setw(45) << "   \t\t\tSpesifikasi" << "|"
+         << setw(15) << "  Harga" << "|"
+         << setw(6)  << " Stok" << "|" << endl;
+    cout << "=======================================================================================================================" << endl;
+
+    for (int i = 0; i < jml_produk; i++)
+    {
+        cout << "| " << right << setw(2) << (i + 1) << "." << "|" 
+             << setw(28) << left << daftar_produk[i].nama << "|"
+             << setw(60) << daftar_produk[i].spesifikasi << "|" << "Rp."
+             << setw(12) << fixed << setprecision(0) << daftar_produk[i].harga << "|"
+             << setw(6) << daftar_produk[i].stok << "|" << endl;
+    }
+    cout << "=======================================================================================================================" << endl;
+
+    int nomor_produk;
+    cout << "Masukan nomor produk yang ingin diubah stoknya : ";
+    cin >> nomor_produk;
+    cin.ignore();
+        system("cls");
+
+    if(nomor_produk < 1 || nomor_produk > jml_produk) {
+        cout << "=====================" << endl; 
+        cout << "| Nomor Tidak Valid |" << endl;
+        cout << "=====================";
+        cin.get();
+        system("cls");
+        return;
+    }
+
+    int stok_baru;
+    cout << "===========================================" << endl;
+    cout << "|            U B A H  S T O K             |" << endl;
+    cout << "===========================================" << endl;
+    cout << "Masuka Stok baru untuk  " << daftar_produk[nomor_produk - 1].nama << " : ";
+    cin >> stok_baru;
+    cin.ignore();
+    system("cls");
+
+    if(stok_baru < 0) {
+        cout << "==========================================" << endl;
+        cout << "|            Stok Tidak Valid            |" << endl;
+        cout << "|        Angka Tidak Boleh Minus         |" << endl;
+        cout << "==========================================";
+        cin.get();
+        system("cls");
+        return;
+    }
+
+    daftar_produk[nomor_produk - 1].stok = stok_baru;
+    simpan_produk();
+
+    cout << "===================================================" << endl;
+    cout << "|  S T O K  B E R H A S I L  D I P E R B A R U I  |" << endl;
+    cout << "|         Tekan Enter Untuk Melanjutkan           |" << endl;
+    cout << "===================================================";
+    cin.get();
+    system("cls");
+    
+}
 //Function Edit harga produk
 void edit_harga_produk()
 {
@@ -669,11 +746,16 @@ int muat_akun()
 // Function Tambah Akun
 bool tambah_akun()
 {
+    cout << "====================================" << endl;
+    cout << "|          R E G I S T E R         |" << endl;
+    cout << "====================================" << endl;
     string user, pass   ;
     cout << "Masukan username : ";
     getline(cin, user);
     cout << "Masukkka password : ";
     getline(cin, pass);
+
+    system("cls");
 
     for(int i = 0; i < jml_akun; i++){
         if(username[i] == user) {
@@ -792,6 +874,11 @@ void search_produk()
     cin >> pilihTambah;
     cin.ignore();
 
+    if(pilihTambah == 't' || pilihTambah == 'T'){
+        system("cls");
+        return;
+    }
+
     if(pilihTambah == 'y' || pilihTambah == 'Y')
     {
         int pilih_nomor, jumlah;
@@ -830,15 +917,15 @@ void search_produk()
         jml_keranjang++;
 
         system("cls");
-        cout << "================================================================" << endl;
-        cout << "|" << left << setw(20) << "Produk"
+        cout << "=================================================================================" << endl;
+        cout << "|" << left << setw(30) << "Produk"
              << "|" << setw(10) << "Jumlah"
-             << "|" << setw(30) << "Status" << "|" << endl;
-        cout << "================================================================" << endl;
-        cout << "|" << setw(20) << daftar_produk[idx].nama
+             << "|" << setw(37) << "Status" << "|" << endl;
+        cout << "=================================================================================" << endl;
+        cout << "|" << setw(30) << daftar_produk[idx].nama
              << "|" << setw(10) << jumlah
-             << "|" << setw(30) << "Sudah Ditambahkan ke keranjang" << "|" << endl;
-        cout << "================================================================";
+             << "|" << setw(37) << "Sudah Ditambahkan ke keranjang" << "|" << endl;
+        cout << "=================================================================================";
         cin.get();
         system("cls");
     }
@@ -1131,8 +1218,11 @@ void hapus_keranjang()
     }
 
     jml_keranjang--;
-
-    cout << "Barang berhasil dihapus!\n";
+    cout << "============================" << endl;
+    cout << "| Barang berhasil dihapus! |" << endl;
+    cout << "============================";
+    cin.get();
+    system("cls");
 }
 
 void undo_hapus_keranjang() {
@@ -1177,7 +1267,9 @@ void undo_hapus_keranjang() {
 
          Keranjang kembali = pop_keranjang(pilih_undo - 1);
          keranjang[jml_keranjang++] = kembali;
-         cout << "Barang " << kembali.namaProduk << " Dikembalikan  ke keranjang!";
+         cout << "=============================" << endl;
+         cout << "| Barang Sudah Dikembalikan |" << endl;
+         cout << "=============================";
          cin.get();
          system("cls");
 }
@@ -1244,13 +1336,15 @@ void Checkout()
             keranjang[i].jumlah
         );
     }
-
+    
+    simpan_produk();
     jml_keranjang = 0;
     cout << "======================" << endl;
     cout << "| Checkout berhasil! |" << endl;
     cout << "======================";
     cin.get();
     system("cls");
+    return;
 }
 
 int main()
@@ -1345,6 +1439,9 @@ menu_awal:
             dequeue();
             break;
         case 7:
+            edit_stok();
+            break;
+        case 8:
             cout << "============================****=============================" << endl;
             cout << "|              Terima Kasih Atas Kerjasamanya                |" << endl;
             cout << "============================****=============================";
@@ -1368,11 +1465,16 @@ menu_login:
         {
         case '1':
         {
+            cout << "==================================" << endl;
+            cout << "|   S I L A H K A N  L O G I N   |" << endl;
+            cout << "==================================" << endl;
             string user, pass;
             cout << "Masukkan username : ";
             getline(cin, user);
             cout << "Masukkan Password :";
             getline(cin, pass);
+
+            system("cls");
 
             if (login(user, pass))
             {

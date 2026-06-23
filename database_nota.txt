@@ -1,2 +1,6 @@
-mouse ryzer|1|1.2e+006|Thu Jun 18 17:39:52 2026
+mouse ryzer|1|1200000|Thu Jun 18 17:39:52 2026
 |Diproses
+Samsung Galaxy A55|1|5999000|Tue Jun 23 15:48:15 2026|Diproses
+Samsung Galaxy A55|1|5999000|Tue Jun 23 15:52:39 2026|Diproses
+Samsung Galaxy A55|1|5999000|Tue Jun 23 16:05:46 2026|Diproses
+Samsung Galaxy S24 Ultra|1|21999000|Tue Jun 23 16:05:47 2026|Diproses
