@@ -6,6 +6,10 @@
 #include <ctime>
 using namespace std;
 
+
+// ========================
+// STRUCT & GLOBAL DATA
+// ========================
 struct format_rupiah : numpunct<char>
 {
     char do_thousands_sep() const { return '.'; }
@@ -53,94 +57,104 @@ struct Queue
     int jumlah;
 };
 
-Nota *head = NULL;
-Nota *tail = NULL;
-
-Queue antrian[100];
-int front = 0;
-int rear = 0;
-
-Keranjang keranjang[100];
-int jml_keranjang = 0;
-
-// database akun
-//==============================
-const int MAX_AKUN = 100;
-int jml_akun = 0;
-
-string username[MAX_AKUN];
-string password[MAX_AKUN];
-
-char pilihan_login;
-
-// database produk
-//==============================
-const int MAX_PRODUK = 100;
-produk daftar_produk[MAX_PRODUK];
-int jml_produk = 0;
-
-// type data untuk menu
-int pilihan = 0, pilihan_awal = 0, pilih = 0;
-
-// type data untuk kode penjual
 struct kode
 {
     string kode_penjual;
 };
 
-bool login_kode;
+struct stack_keranjang {
+    Keranjang data[100];
+    int top;
+} sKeranjang;
+
+const int MAX_PRODUK = 100;
+const int MAX_AKUN = 100;
+
+produk daftar_produk[MAX_PRODUK];
+Keranjang keranjang[100];
+Queue antrian[100];
+string username[MAX_AKUN], password[MAX_AKUN];
 kode Codes[1] = {"11223344"};
+
+int jml_produk = 0, jml_keranjang = 0, jml_akun = 0;
+int front = 0, rear = 0;
+int pilihan = 0, pilihan_awal = 0, pilih = 0;
+char pilihan_login;
+bool login_kode;
 string kode_kode;
 
-// fungsi untuk login pembeli
-bool login(string user, string pass)
-{
-    for (int i = 0; i < jml_akun; i++)
-    {
-        if (username[i] == user && password[i] == pass)
-            return true;
+Nota *head = NULL;
+Nota *tail = NULL;
+
+
+// ==========================
+//    UTILITY FUNCTION
+// ==========================
+string toLower(string str) {
+    for(int i = 0; i < str.length(); i++) {
+        str[i] = tolower(str[i]);
     }
-    return false;
+    return str;
 }
-// Fungction Menu Utama
 
-void menu_awal()
+string getWaktu()
 {
-    cout << "=========================" << endl;
-    cout << "|       MENU AWAL       |" << endl;
-    cout << "=========================" << endl;
-    cout << "|  1.Sebagai Penjual    |" << endl;
-    cout << "|  2.Sebagai Pembeli    |" << endl;
-    cout << "|  3.keluar             |" << endl;
-    cout << "==========================" << endl;
-    cout << "Masukan pilihan anda : ";
-    cin >> pilihan_awal;
-    cin.ignore();
-    system("cls");
+    time_t now = time(0);
+    char *dt = ctime(&now);
+    string waktu(dt);
+
+    //hapus newline bawaan ctime
+    if(!waktu.empty() && waktu[waktu.length() - 1] == '\n') {
+        waktu.erase(waktu.length() - 1);
+    }
+    return waktu;
 }
 
-// Function Login Penjual
-void menu_penjual()
+string ambil_kolom(const string &line, int index)
 {
-    cout << "======= MENU ADMIN =======" << endl;
-    cout << "|  1. Tambah Barang      |" << endl;
-    cout << "|  2. Hapus Barang       |" << endl;
-    cout << "|  3. Edit Harga Barang  |" << endl;
-    cout << "|  4. Lihat data barang  |" << endl;
-    cout << "|  5. Lihat Antrian      |" << endl;
-    cout << "|  6. Proses Pengiriman  |" << endl;
-    cout << "|  7. Edit Stok          |" << endl;
-    cout << "|  8. Keluar             |" << endl;
-    cout << "==========================" << endl;
-    cout << "Masukkan pilihan anda : ";
-    cin >> pilih;
-    cin.ignore();
-    system("cls");
+    size_t awal = 0;
+    for (int i = 0; i < index; i++)
+    {
+        size_t pos = line.find("|", awal);
+        if (pos == string::npos)
+            return "";
+        awal = pos + 1;
+    }
+
+    size_t akhir = line.find("|", awal);
+    if (akhir == string::npos)
+        akhir = line.length();
+
+    return line.substr(awal, akhir - awal);
 }
 
-// Function Produk Atau Menu penjual
+void initstack_keranjang() {
+    sKeranjang.top = -1;
+}
 
-// Function Simpan Produk Ke database
+void push_keranjang(Keranjang k) {
+    if(sKeranjang.top < 99) {
+        sKeranjang.data[++sKeranjang.top] = k;
+    }
+}
+
+Keranjang pop_keranjang(int index_pop) {
+    if(index_pop < 0 || index_pop > sKeranjang.top) {
+        cout << "Nomor tidak valid" << endl;
+        return Keranjang();
+    }
+    Keranjang kembali = sKeranjang.data[index_pop];
+
+    for(int i = index_pop; i < sKeranjang.top; i++) {
+        sKeranjang.data[i] = sKeranjang.data[i + 1];
+    }
+    sKeranjang.top--;
+    return kembali;
+}
+
+// ==========================
+//   DATABASE 
+// ==========================
 void simpan_produk()
 {
     ofstream file("database_produk.txt");
@@ -163,53 +177,6 @@ void simpan_produk()
     file.close();
 }
 
-void simpan_nota()
-{
-    ofstream file("database_nota.txt");
-    if(!file)
-    {
-        cout << "=======================================" << endl;
-        cout << "| Gagal Membuka file untuk menyimpan! |" << endl;
-        cout << "=======================================";
-        cin.get();
-        system("cls");
-        return;
-    }
-    Nota *temp = head;
-
-    while(temp != NULL)
-    {
-        file << temp->namaProduk << "|";
-        file << temp->jumlah << "|";
-        file << fixed << setprecision(0) << temp->totalHarga << "|";
-        file << temp->waktu << "|";
-        file << temp->status << endl;
-
-        temp = temp->next;
-    }
-
-    file.close();
-}
-
-string ambil_kolom(const string &line, int index)
-{
-    size_t awal = 0;
-    for (int i = 0; i < index; i++)
-    {
-        size_t pos = line.find("|", awal);
-        if (pos == string::npos)
-            return "";
-        awal = pos + 1;
-    }
-
-    size_t akhir = line.find("|", awal);
-    if (akhir == string::npos)
-        akhir = line.length();
-
-    return line.substr(awal, akhir - awal);
-}
-
-// Function Muat Produk Dari database
 int muat_produk()
 {
     ifstream file("database_produk.txt");
@@ -242,6 +209,34 @@ int muat_produk()
     }
     file.close();
     return jml_produk;
+}
+
+void simpan_nota()
+{
+    ofstream file("database_nota.txt");
+    if(!file)
+    {
+        cout << "=======================================" << endl;
+        cout << "| Gagal Membuka file untuk menyimpan! |" << endl;
+        cout << "=======================================";
+        cin.get();
+        system("cls");
+        return;
+    }
+    Nota *temp = head;
+
+    while(temp != NULL)
+    {
+        file << temp->namaProduk << "|";
+        file << temp->jumlah << "|";
+        file << fixed << setprecision(0) << temp->totalHarga << "|";
+        file << temp->waktu << "|";
+        file << temp->status << endl;
+
+        temp = temp->next;
+    }
+
+    file.close();
 }
 
 void muat_nota()
@@ -288,7 +283,56 @@ void muat_nota()
     file.close();
 }
 
-// Function Tambah Produk
+void simpan_akun()
+{
+    ofstream file("database_akun.txt");
+    if (!file)
+    {
+        cout << "=======================================" << endl;
+        cout << "| Gagal Membuka file untuk menyimpan! |" << endl;
+        cout << "=======================================";
+        cin.get();
+        system("cls");
+        return;
+    }
+    for (int i = 0; i < jml_akun; i++)
+    {
+        file << username[i] << "|" << password[i] << endl;
+    }
+    file.close();
+    cout << "===============================" << endl;
+    cout << "| Data akun berhasil disimpan |" << endl;
+    cout << "===============================";
+    cin.get();
+    system("cls");
+}
+
+int muat_akun()
+{
+    ifstream file("database_akun.txt");
+    if (!file)
+    {
+        cout << "==================================================" << endl;
+        cout << "| Database belum ada, mulai dengan data default. |" << endl;
+        cout << "==================================================";
+        cin.get();
+        system("cls");
+        return 0;
+    }
+    jml_akun = 0;
+    while (getline(file, username[jml_akun], '|') &&
+           getline(file, password[jml_akun]))
+    {
+        jml_akun++;
+    }
+    file.close();
+    return jml_akun;
+}
+
+
+// ==========================
+//        CRUD
+// ==========================
 void tambah_produk()
 {
     int idx = -1;
@@ -388,7 +432,6 @@ void tambah_produk()
     system("cls");
 }
 
-
 void edit_stok() {
     if(jml_produk == 0) {
         cout << "=============================================" << endl;
@@ -464,7 +507,7 @@ void edit_stok() {
     system("cls");
     
 }
-//Function Edit harga produk
+
 void edit_harga_produk()
 {
     if (jml_produk == 0)
@@ -534,7 +577,6 @@ void edit_harga_produk()
     system("cls");
 }
 
-//Function Hapus Produk
 void hapus_produk()
 {
     if (jml_produk == 0)
@@ -620,7 +662,6 @@ void sorting()
     system("cls");
 }
 
-// Function Tampilkan Produk
 void tampilkan_produk(bool pembeli)
 {
     if (jml_produk == 0)
@@ -758,71 +799,21 @@ void tampilkan_produk(bool pembeli)
     cin.get();
     system("cls");
 }
-// Function Pembeli Atau Menu Pembeli
 
-// Function Menu Login Pembeli
-void menu_login_buyer()
-{
-    cout << "======= MENU LOGIN =======" << endl;
-    cout << "|       1.Login          |" << endl;
-    cout << "|       2.Register       |" << endl;
-    cout << "|       3.keluar         |" << endl;
-    cout << "==========================" << endl;
-    cout << "Masukan pilihan anda : ";
-    cin >> pilihan_login;
-    cin.ignore();
-    system("cls");
-}
 
-// Function Simpan Akun Ke database
-void simpan_akun()
+// ===========================
+//     LOGIN
+// ===========================
+bool login(string user, string pass)
 {
-    ofstream file("database_akun.txt");
-    if (!file)
-    {
-        cout << "=======================================" << endl;
-        cout << "| Gagal Membuka file untuk menyimpan! |" << endl;
-        cout << "=======================================";
-        cin.get();
-        system("cls");
-        return;
-    }
     for (int i = 0; i < jml_akun; i++)
     {
-        file << username[i] << "|" << password[i] << endl;
+        if (username[i] == user && password[i] == pass)
+            return true;
     }
-    file.close();
-    cout << "===============================" << endl;
-    cout << "| Data akun berhasil disimpan |" << endl;
-    cout << "===============================";
-    cin.get();
-    system("cls");
+    return false;
 }
 
-// Function Muat Akun Dari database
-int muat_akun()
-{
-    ifstream file("database_akun.txt");
-    if (!file)
-    {
-        cout << "==================================================" << endl;
-        cout << "| Database belum ada, mulai dengan data default. |" << endl;
-        cout << "==================================================";
-        cin.get();
-        system("cls");
-        return 0;
-    }
-    jml_akun = 0;
-    while (getline(file, username[jml_akun], '|') &&
-           getline(file, password[jml_akun]))
-    {
-        jml_akun++;
-    }
-    file.close();
-    return jml_akun;
-}
-
-// Function Tambah Akun
 bool tambah_akun()
 {
     cout << "====================================" << endl;
@@ -861,7 +852,55 @@ bool tambah_akun()
     return true;
 }
 
-// Function Menu Utama Pembeli
+// ===========================
+//    MENU
+// ===========================
+void menu_awal()
+{
+    cout << "=========================" << endl;
+    cout << "|       MENU AWAL       |" << endl;
+    cout << "=========================" << endl;
+    cout << "|  1.Sebagai Penjual    |" << endl;
+    cout << "|  2.Sebagai Pembeli    |" << endl;
+    cout << "|  3.keluar             |" << endl;
+    cout << "==========================" << endl;
+    cout << "Masukan pilihan anda : ";
+    cin >> pilihan_awal;
+    cin.ignore();
+    system("cls");
+}
+
+void menu_penjual()
+{
+    cout << "======= MENU ADMIN =======" << endl;
+    cout << "|  1. Tambah Barang      |" << endl;
+    cout << "|  2. Hapus Barang       |" << endl;
+    cout << "|  3. Edit Harga Barang  |" << endl;
+    cout << "|  4. Lihat data barang  |" << endl;
+    cout << "|  5. Lihat Antrian      |" << endl;
+    cout << "|  6. Proses Pengiriman  |" << endl;
+    cout << "|  7. Edit Stok          |" << endl;
+    cout << "|  8. Keluar             |" << endl;
+    cout << "==========================" << endl;
+    cout << "Masukkan pilihan anda : ";
+    cin >> pilih;
+    cin.ignore();
+    system("cls");
+}
+
+void menu_login_buyer()
+{
+    cout << "======= MENU LOGIN =======" << endl;
+    cout << "|       1.Login          |" << endl;
+    cout << "|       2.Register       |" << endl;
+    cout << "|       3.keluar         |" << endl;
+    cout << "==========================" << endl;
+    cout << "Masukan pilihan anda : ";
+    cin >> pilihan_login;
+    cin.ignore();
+    system("cls");
+}
+
 void menu_utama()
 {
     cout << "================================" << endl;
@@ -880,26 +919,9 @@ void menu_utama()
     system("cls");
 }
 
-string toLower(string str) {
-    for(int i = 0; i < str.length(); i++) {
-        str[i] = tolower(str[i]);
-    }
-    return str;
-}
-
-string getWaktu()
-{
-    time_t now = time(0);
-    char *dt = ctime(&now);
-    string waktu(dt);
-
-    //hapus newline bawaan ctime
-    if(!waktu.empty() && waktu[waktu.length() - 1] == '\n') {
-        waktu.erase(waktu.length() - 1);
-    }
-    return waktu;
-}
-
+// ===========================
+//   PEMBELI FUNCTION
+// ===========================
 void search_produk()
 {
     string cari;
@@ -1311,7 +1333,6 @@ void tampil_keranjang()
     }
 }
 
-//Function Menu Utama Lihat Keranjang
 void menu_keranjang()
 {
     tampil_keranjang();
@@ -1326,35 +1347,6 @@ void menu_keranjang()
     cin >> pilih;
     cin.ignore();
     system("cls");
-}
-
-struct stack_keranjang {
-    Keranjang data[100];
-    int top;
-} sKeranjang;
-
-void initstack_keranjang() {
-    sKeranjang.top = -1;
-}
-
-void push_keranjang(Keranjang k) {
-    if(sKeranjang.top < 99) {
-        sKeranjang.data[++sKeranjang.top] = k;
-    }
-}
-
-Keranjang pop_keranjang(int index_pop) {
-    if(index_pop < 0 || index_pop > sKeranjang.top) {
-        cout << "Nomor tidak valid" << endl;
-        return Keranjang();
-    }
-    Keranjang kembali = sKeranjang.data[index_pop];
-
-    for(int i = index_pop; i < sKeranjang.top; i++) {
-        sKeranjang.data[i] = sKeranjang.data[i + 1];
-    }
-    sKeranjang.top--;
-    return kembali;
 }
 
 void hapus_keranjang()
@@ -1531,6 +1523,7 @@ void Checkout()
     system("cls");
     return;
 }
+
 
 int main()
 {
