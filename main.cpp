@@ -152,6 +152,42 @@ Keranjang pop_keranjang(int index_pop) {
     return kembali;
 }
 
+string format_Tengah_teks(string pesan, int lebar_total) {
+    int sisa_spasi = lebar_total - pesan.length();
+    if (sisa_spasi < 0) sisa_spasi = 0;
+
+    int spasi_kiri = sisa_spasi / 2;
+    int spasi_kanan = sisa_spasi - spasi_kiri;
+
+    string kiri = string(spasi_kiri, ' ');
+    string kanan = string(spasi_kanan, ' ');
+
+    return kiri + pesan + kanan;
+}
+
+void sorting()
+{
+    for (int i = 1; i < jml_produk; i++)
+    {
+        produk key = daftar_produk[i];
+        int j = i - 1;
+
+        // bandingkan harga
+        while (j >= 0 && daftar_produk[j].harga > key.harga)
+        {
+            daftar_produk[j + 1] = daftar_produk[j];
+            j = j - 1;
+        }
+        daftar_produk[j + 1] = key;
+    }
+    cout << "=======================================================================================================================" << endl;
+    cout << "|" << format_Tengah_teks("DAFTAR PRODUK SUDAH DIURUTKAN DARI HARGA TERRENDAH!", 117) << "|" << endl;
+    cout << "|" << format_Tengah_teks("Tekan enter untuk melanjutkan...", 117)<< "|" << endl;
+    cout << "=======================================================================================================================" << endl;
+    cin.get();
+    system("cls");
+}
+
 // ==========================
 //   DATABASE 
 // ==========================
@@ -160,9 +196,10 @@ void simpan_produk()
     ofstream file("database_produk.txt");
     if (!file)
     {
-        cout << "=======================================" << endl;
-        cout << "| Gagal Membuka file untuk menyimpan! | " << endl;
-        cout << "=======================================";
+        cout << "=======================================================================================================================" << endl;
+        cout << "|" << format_Tengah_teks("GAGAL MEMBUKA FILE UNTUK MENYIMPAN!", 117) << "|" << endl;
+        cout << "|" << format_Tengah_teks("Tekan enter untuk melanjutkan...", 117)<< "|" << endl;
+        cout << "=======================================================================================================================" << endl;
         cin.get();
         system("cls");
         return;
@@ -182,9 +219,10 @@ int muat_produk()
     ifstream file("database_produk.txt");
     if (!file)
     {
-        cout << "==================================================" << endl;
-        cout << "| Database belum ada, mulai dengan data default. |" << endl;
-        cout << "==================================================";
+        cout << "=======================================================================================================================" << endl;
+        cout << "|" << format_Tengah_teks("DATABASE BELUM ADA, MULAI DENGAN DATA DEFAULT", 117) << "|" << endl;
+        cout << "|" << format_Tengah_teks("Tekan enter untuk melanjutkan...", 117)<< "|" << endl;
+        cout << "=======================================================================================================================" << endl;
         cin.get();
         system("cls");
         return 0;
@@ -216,9 +254,10 @@ void simpan_nota()
     ofstream file("database_nota.txt");
     if(!file)
     {
-        cout << "=======================================" << endl;
-        cout << "| Gagal Membuka file untuk menyimpan! |" << endl;
-        cout << "=======================================";
+        cout << "=======================================================================================================================" << endl;
+        cout << "|" << format_Tengah_teks("GAGAL MEMBUKA FILE UNTUK MENYIMPAN!", 117) << "|" << endl;
+        cout << "|" << format_Tengah_teks("Tekan enter untuk melanjutkan...", 117)<< "|" << endl;
+        cout << "=======================================================================================================================" << endl;
         cin.get();
         system("cls");
         return;
@@ -288,9 +327,10 @@ void simpan_akun()
     ofstream file("database_akun.txt");
     if (!file)
     {
-        cout << "=======================================" << endl;
-        cout << "| Gagal Membuka file untuk menyimpan! |" << endl;
-        cout << "=======================================";
+        cout << "=======================================================================================================================" << endl;
+        cout << "|" << format_Tengah_teks("GAGAL MEMBUKA FILE UNTUK MENYIMPAN!", 117) << "|" << endl;
+        cout << "|" << format_Tengah_teks("Tekan enter untuk melanjutkan...", 117)<< "|" << endl;
+        cout << "=======================================================================================================================" << endl;
         cin.get();
         system("cls");
         return;
@@ -300,9 +340,10 @@ void simpan_akun()
         file << username[i] << "|" << password[i] << endl;
     }
     file.close();
-    cout << "===============================" << endl;
-    cout << "| Data akun berhasil disimpan |" << endl;
-    cout << "===============================";
+    cout << "=======================================================================================================================" << endl;
+    cout << "|" << format_Tengah_teks("DATA AKUN BERHASIL DISIMPAN!", 117) << "|" << endl;
+    cout << "|" << format_Tengah_teks("Tekan enter untuk melanjutkan...", 117)<< "|" << endl;
+    cout << "=======================================================================================================================" << endl;
     cin.get();
     system("cls");
 }
@@ -312,9 +353,10 @@ int muat_akun()
     ifstream file("database_akun.txt");
     if (!file)
     {
-        cout << "==================================================" << endl;
-        cout << "| Database belum ada, mulai dengan data default. |" << endl;
-        cout << "==================================================";
+        cout << "=======================================================================================================================" << endl;
+        cout << "|" << format_Tengah_teks("DATABASE BELUM ADA, MULAI DENGAN DATA DEFAULT", 117) << "|" << endl;
+        cout << "|" << format_Tengah_teks("Tekan enter untuk melanjutkan...", 117)<< "|" << endl;
+        cout << "=======================================================================================================================" << endl;
         cin.get();
         system("cls");
         return 0;
@@ -331,7 +373,7 @@ int muat_akun()
 
 
 // ==========================
-//        CRUD
+//        CRUD  DAN  MENU PENJUAL
 // ==========================
 void tambah_produk()
 {
@@ -344,9 +386,10 @@ void tambah_produk()
 
     if (jml_produk >= MAX_PRODUK)
     {
-        cout << "===================================================" << endl;
-        cout << "| Database penuh tidak dapat menambah produk lagi |" << endl;
-        cout << "===================================================";
+        cout << "=======================================================================================================================" << endl;
+        cout << "|" << format_Tengah_teks("DATABASE PENUH TIDAK DAPAT MENAMBAHKAN PRODUK LAGI", 117) << "|" << endl;
+        cout << "|" << format_Tengah_teks("Tekan enter untuk melanjutkan...", 117)<< "|" << endl;
+        cout << "=======================================================================================================================" << endl;
         cin.get();
         system("cls");
         return;
@@ -369,12 +412,14 @@ void tambah_produk()
 
             char pilih_stok;
             int tambah_stok;
+            string teks;
 
-            cout << "============================================" << endl;
-            cout << "|          Produk Sudah Tersedia!          |" << endl;
-            cout << "|  Apakah ingin menambahkan stok?          |" << endl;
-            cout << "============================================" << endl;
-            cout << "Apakah ingin menambahkan stok produk? (y/t): ";
+            cout << "=======================================================================================================================" << endl;
+            cout << "|" << format_Tengah_teks("P R O D U K  S U D A H  T E R S E D I A !", 117) << "|" << endl;
+            cout << "=======================================================================================================================" << endl;
+            cout << "|" << format_Tengah_teks("APAKAH INGIN MENAMBAHKAN STOK PRODUK?  (Y/T)", 117)<<"|" << endl;
+            cout << "=======================================================================================================================" << endl;
+            cout << "               Masukan Jawaban : ";
             cin >> pilih_stok;
             cin.ignore();
 
@@ -386,21 +431,21 @@ void tambah_produk()
 
                 daftar_produk[idx].stok += tambah_stok;
                 simpan_produk();
-
-                cout << "========================================" << endl;
-                cout << "| Stok berhasil ditambahkan!           |" << endl;
-                cout << "| Total stok sekarang: "
-                     << daftar_produk[idx].stok << endl;
-                cout << "========================================" << endl;
+                teks = "TOTAL STOK SEKARANG : " + daftar_produk[idx].stok; 
+                cout << "=======================================================================================================================" << endl;
+                cout << "|" << format_Tengah_teks("STOK BERHASIL DITAMBAHKAN!", 117) << "|" << endl;
+                cout << "|" << format_Tengah_teks(teks, 117) << "|" << endl;
+                cout << "=======================================================================================================================" << endl;
             }
             else
             {
-                cout << "===============================" << endl;
-                cout << "| Penambahan stok dibatalkan! |" << endl;
-                cout << "===============================" << endl;
+                cout << "=======================================================================================================================" << endl;
+                cout << "|" << format_Tengah_teks("PENAMBAHAN STOK DIBATALKAN!",117) << "|" << endl;
+                cout << "=======================================================================================================================" << endl;
             }
 
-            cout << "Tekan enter untuk kembali...";
+            cout << "|" << format_Tengah_teks("Tekan enter untuk melanjutkan...", 117)<< "|" << endl;
+            cout << "=======================================================================================================================" << endl;
             cin.get();
             system("cls");
             return;
@@ -424,32 +469,436 @@ void tambah_produk()
     jml_produk++;
     simpan_produk();
 
-    cout << "===================================" << endl;
-    cout << "| Produk berhasil ditambahkan!    |" << endl;
-    cout << "===================================" << endl;
-    cout << "Tekan enter untuk kembali...";
+    cout << "=======================================================================================================================" << endl;
+    cout << "|" <<format_Tengah_teks("P R O D U K  B E R H A S I L   D I T A M B A H K A N !", 117) << "|" << endl;
+    cout << "|" << format_Tengah_teks("Tekan enter untuk melanjutkan...", 117)<< "|" << endl;
+    cout << "=======================================================================================================================" << endl;
+    cin.get();
+    system("cls");
+}
+
+void hapus_produk()
+{
+    if (jml_produk == 0)
+    {
+        cout << "=======================================================================================================================" << endl;
+        cout << "|" << format_Tengah_teks("TIDAK ADA PRODUK YANG TERSEDIA UNTUK DIHAPUS.", 117) << "|" << endl;
+        cout << "=======================================================================================================================" << endl;
+        cin.get();
+        system("cls");
+        return;
+    }
+
+cout.imbue(locale(cout.getloc(), new format_rupiah));
+    cout << "==================================================== HAPUS PRODUK =====================================================" << endl;
+    cout << "|" << format_Tengah_teks("NO", 4) << "|"
+         << format_Tengah_teks("NAMA", 28) << "|"
+         << format_Tengah_teks("SPESIFIKASI", 60) << "|"
+         << format_Tengah_teks("HARGA", 15) << "|"
+         << format_Tengah_teks("STOK", 6) << "|" << endl;
+    cout << "=======================================================================================================================" << endl;
+    for (int i = 0; i < jml_produk; i++)
+    {
+        cout << "| " << right << setw(2) << (i + 1) << "." << "|" 
+             << setw(28) << left << daftar_produk[i].nama << "|"
+             << setw(60) << daftar_produk[i].spesifikasi << "|" << "Rp."
+             << setw(12) << fixed << setprecision(0) << daftar_produk[i].harga << "|"
+             << setw(6) << daftar_produk[i].stok << "|" << endl;
+    }
+    cout << "=======================================================================================================================" << endl;
+
+    int nomor;
+    cout << "Masukkan nomor produk yang ingin dihapus: ";
+    cin >> nomor;
+    cin.ignore();
+
+    if (nomor < 1 || nomor > jml_produk)
+    {
+        cout << "=======================================================================================================================" << endl;
+        cout << "|" << format_Tengah_teks("N O M O R  T I D A K  V A L I D !", 117) << "|" << endl;
+        cout << "=======================================================================================================================" << endl;
+        cin.get();
+        system("cls");
+        return;
+    }
+
+    string nama_dihapus = daftar_produk[nomor - 1].nama;
+
+    // Menggeser sisa elemen array ke kiri
+    for (int i = nomor - 1; i < jml_produk - 1; i++)
+    {
+        daftar_produk[i] = daftar_produk[i + 1];
+    }
+    jml_produk--;
+
+    simpan_produk();
+    system("cls");
+    cout << "=======================================================================================================================" << endl;
+    cout << "|" << format_Tengah_teks("Produk " + nama_dihapus + " berhasil dihapus!", 117) <<"|"<<endl;
+    cout << "|" << format_Tengah_teks("Tekan enter untuk melanjutkan...", 117)<< "|" << endl;
+    cout << "=======================================================================================================================" << endl; 
+    cin.get();
+    system("cls");
+}
+
+void edit_harga_produk()
+{
+    if (jml_produk == 0)
+    {
+        cout << "=======================================================================================================================" << endl;
+        cout << "|" << format_Tengah_teks("TIDAK ADA PRODUK YANG TERSEDIA UNTUK DIEDIT.", 117) << "|" << endl;
+        cout << "|" << format_Tengah_teks("Tekan enter untuk melanjutkan...", 117)<< "|" << endl;
+        cout << "=======================================================================================================================" << endl;
+        cin.get();
+        system("cls");
+        return;
+    }
+
+    cout.imbue(locale(cout.getloc(), new format_rupiah));
+    cout << "=======================================================================================================================" << endl;
+    cout << "|" << format_Tengah_teks("E D I T  H A R G A  P R O D U K", 117) << "|" << endl;
+    cout << "=======================================================================================================================" << endl;
+     cout << "|" << format_Tengah_teks("NO", 4) << "|"
+          << format_Tengah_teks("NAMA",70) << "|"
+          << format_Tengah_teks("HARGA SAAT INI", 41) << "|" << endl;
+    cout << "=======================================================================================================================" << endl;
+    for (int i = 0; i < jml_produk; i++)
+    {
+        cout << "| " << right << setw(2) << i + 1 << "." << "|"
+             << setw(70) << left << daftar_produk[i].nama << "| Rp."
+             << setw(37) << fixed << setprecision(0) << daftar_produk[i].harga << "|" << endl;
+    }
+    cout << "=======================================================================================================================" << endl;
+
+    int nomor;
+    cout << "Masukkan nomor produk yang ingin diubah harganya: ";
+    cin >> nomor;
+    cin.ignore();
+
+    if (nomor < 1 || nomor > jml_produk)
+    {
+        cout << "=======================================================================================================================" << endl;
+        cout << "|" << format_Tengah_teks("N O M O R  T I D A K  V A L I D !", 117) << "|" << endl;
+        cout << "|" << format_Tengah_teks("Tekan enter untuk melanjutkan...", 117)<< "|" << endl;
+        cout << "=======================================================================================================================" << endl;
+        cin.get();
+        system("cls");
+        return;
+    }
+
+    double harga_baru;
+    cout << "Masukkan harga baru untuk " << daftar_produk[nomor - 1].nama << " : Rp.";
+    cin >> harga_baru;
+    cin.ignore();
+    system("cls");
+
+    if (harga_baru < 0)
+    {
+        cout << "=======================================================================================================================" << endl;
+        cout << "|" << format_Tengah_teks("HARGA TIDAK VALID (HARGA TIDAK BOLEH MINUS)!", 117) << "|" << endl;
+        cout << "|" << format_Tengah_teks("Tekan enter untuk melanjutkan...", 117)<< "|" << endl;
+        cout << "=======================================================================================================================" << endl;
+        cin.get();
+        system("cls");
+        return;
+    }
+
+    daftar_produk[nomor - 1].harga = harga_baru;
+    simpan_produk();
+    cout << "=======================================================================================================================" << endl;
+    cout << "|" << format_Tengah_teks("HARGA PRODUK BERHASIL DIPERBARUI!", 117) << "|" << endl;
+    cout << "|" << format_Tengah_teks("Tekan enter untuk melanjutkan...", 117)<< "|" << endl;
+    cout << "=======================================================================================================================" << endl;
+    cin.get();
+    system("cls");
+}
+
+void tampilkan_produk(bool pembeli)
+{
+    if (jml_produk == 0)
+    {
+        cout << "=======================================================================================================================" << endl;
+        cout << "|" << format_Tengah_teks("T I D A K   A D A  P R O D U K  Y A N G  T E R S E D I A .", 117) << "|" << endl;
+        cout << "|" << format_Tengah_teks("Tekan enter untuk melanjutkan...", 117)<< "|" << endl;
+        cout << "=======================================================================================================================" << endl;
+        cin.get();
+        system("cls");
+        return;
+    }
+
+    cout.imbue(locale(cout.getloc(), new format_rupiah));
+
+    cout << "=======================================================================================================================" << endl;
+    cout << "|"<< format_Tengah_teks("D A F T A R  P R O D U K",117)<<"|" << endl;
+    cout << "=======================================================================================================================" << endl;
+    cout << "|" << format_Tengah_teks("NO", 4) << "|"
+         << format_Tengah_teks("NAMA", 28) << "|"
+         << format_Tengah_teks("SPESIFIKASI", 60) << "|"
+         << format_Tengah_teks("HARGA", 15) << "|"
+         << format_Tengah_teks("STOK", 6) << "|" << endl;
+    cout << "=======================================================================================================================" << endl;
+
+    for (int i = 0; i < jml_produk; i++)
+    {
+        cout << "| " << right << setw(2) << (i + 1) << "." << "|"
+             << setw(28) << left << daftar_produk[i].nama << "|"
+             << setw(60) << daftar_produk[i].spesifikasi << "|" << "Rp."
+             << setw(12) << fixed << setprecision(0) << daftar_produk[i].harga << "|"
+             << setw(6) << daftar_produk[i].stok << "|" << endl;
+    }
+
+    cout << "=======================================================================================================================" << endl;
+
+    char pilih_sorting;
+    cout << "|" << format_Tengah_teks("URUTKAN PRODUK DARI HARGA TERRENDAH?  (Y/T)", 117)<<"|" << endl;
+    cout << "=======================================================================================================================" << endl;
+    cout << "               Masukan Jawaban : ";
+    cin >> pilih_sorting;
+    cin.ignore();
+
+    if (pilih_sorting == 'y' || pilih_sorting == 'Y')
+    {
+        system("cls");
+        sorting();
+
+        cout << "=======================================================================================================================" << endl;
+        cout << "|"<< format_Tengah_teks("D A F T A R  P R O D U K",117)<<"|" << endl;
+        cout << "=======================================================================================================================" << endl;
+        cout << "|" << format_Tengah_teks("NO", 4) << "|"
+         << format_Tengah_teks("NAMA", 28) << "|"
+         << format_Tengah_teks("SPESIFIKASI", 60) << "|"
+         << format_Tengah_teks("HARGA", 15) << "|"
+         << format_Tengah_teks("STOK", 6) << "|" << endl;
+        cout << "=======================================================================================================================" << endl;
+
+        for (int i = 0; i < jml_produk; i++)
+        {
+            cout << "| " << right << setw(2) << (i + 1) << "." << "|"
+                 << setw(28) << left << daftar_produk[i].nama << "|"
+                 << setw(60) << daftar_produk[i].spesifikasi << "|" << "Rp."
+                 << setw(12) << fixed << setprecision(0) << daftar_produk[i].harga << "|"
+                 << setw(6) << daftar_produk[i].stok << "|" << endl;
+        }
+
+        cout << "=======================================================================================================================" << endl;
+    }
+
+    // kalau penjual, selesai sampai sini
+    if (!pembeli)
+    {
+        cout << "|" << format_Tengah_teks("Tekan enter untuk melanjutkan...", 117)<< "|" << endl;
+        cout << "=======================================================================================================================" << endl;
+        cin.get();
+        system("cls");
+        return;
+    }
+
+    // kalau pembeli, bisa tambah ke keranjang
+    char pilihTambah;
+    cout << "=======================================================================================================================" << endl;
+    cout << "|" << format_Tengah_teks("APAKAH INGIN MENAMBAHKAN PRODUK KE KERANJANG?  (Y/T)", 117)<<"|" << endl;
+    cout << "=======================================================================================================================" << endl;
+    cout << "               Masukan Jawaban : ";
+    cin >> pilihTambah;
+    cin.ignore();
+
+    if (pilihTambah == 'y' || pilihTambah == 'Y')
+    {
+        int pilih_nomor, jumlah;
+
+        cout << "Masukkan nomor produk: ";
+        cin >> pilih_nomor;
+        cin.ignore();
+
+        if (pilih_nomor < 1 || pilih_nomor > jml_produk)
+        {
+            cout << "=======================================================================================================================" << endl;
+            cout << "|"<< format_Tengah_teks("N O M O R   T I D A K  V A L I D !", 117) <<"|" << endl;
+            cout << "|" << format_Tengah_teks("Tekan enter untuk kembali...", 117)<< "|" << endl;
+            cout << "=======================================================================================================================" << endl;
+            cin.get();
+            system("cls");
+            return;
+        }
+
+        cout << "Masukkan jumlah: ";
+        cin >> jumlah;
+        cin.ignore();
+
+        if (jumlah > daftar_produk[pilih_nomor - 1].stok)
+        {
+            cout << "=======================================================================================================================" << endl;
+            cout << "|"<< format_Tengah_teks("S T O K   T I D A K   M E N C U K U P I !", 117)<<"|" << endl;
+            cout << "|" << format_Tengah_teks("Tekan enter untuk kembali...", 117)<< "|" << endl;
+            cout << "=======================================================================================================================" << endl;
+            cin.get();
+            system("cls");
+            return;
+        }
+
+        keranjang[jml_keranjang].namaProduk = daftar_produk[pilih_nomor - 1].nama;
+        keranjang[jml_keranjang].jumlah = jumlah;
+        keranjang[jml_keranjang].harga = daftar_produk[pilih_nomor - 1].harga;
+
+        jml_keranjang++;
+
+        cout << "=======================================================================================================================" << endl;
+        cout << "|" <<format_Tengah_teks("P R O D U K  B E R H A S I L   D I T A M B A H K A N  K E  K E R A N J A N G !", 117) << "|" << endl;
+        cout << "=======================================================================================================================" << endl;
+    }
+    else
+    {
+        cout << "=======================================================================================================================" << endl;
+        cout << "|"<< format_Tengah_teks("T I D A K   J A D I  M E N A M B A H K A N  P R O D U K", 117) << "|" << endl;
+        cout << "=======================================================================================================================" << endl;
+    }
+
+    cout << "|" << format_Tengah_teks("Tekan enter untuk kembali...", 117)<< "|" << endl;
+    cout << "=======================================================================================================================" << endl;
+    cin.get();
+    system("cls");
+}
+
+void lihat_antrian()
+{
+    Nota *temp = head;
+    Nota *dataDiproses[100];
+    int jumlah = 0;
+
+    while (temp != NULL)
+    {
+        if (temp->status == "Diproses")
+        {
+            dataDiproses[jumlah] = temp;
+            jumlah++;
+        }
+        temp = temp->next;
+    }
+
+    if (jumlah == 0)
+    {
+        cout << "=======================================================================================================================" << endl;
+        cout << "|" << format_Tengah_teks("T I D A K   A D A  A N T R I A N !", 117) << "|" << endl;
+        cout << "|" << format_Tengah_teks("Tekan enter untuk melanjutkan...", 117)<< "|" << endl;
+        cout << "=======================================================================================================================" << endl;
+        cin.get();
+        system("cls");
+        return;
+    }
+
+    cout << "=======================================================================================================================" << endl;
+    cout << "|" << format_Tengah_teks("A N T R I A N", 117) << "|" << endl;
+    cout << "=======================================================================================================================" << endl;
+    cout << "|" << format_Tengah_teks("NO", 4) << "|"
+         << format_Tengah_teks("NAMA", 80) << "|"
+         << format_Tengah_teks("JUMLAH", 31) << "|" << endl;
+    cout << "=======================================================================================================================" << endl;
+    for (int i = 0; i < jumlah; i++)
+    {
+        cout << "| " << right << setw(3) << (to_string(i + 1) + ".") << "|" 
+                 << setw(80) << left << dataDiproses[i]->namaProduk << "|" 
+                 << setw(31) << dataDiproses[i]->jumlah << "|" <<endl;
+    }
+
+    char pilih;
+    cout << "=======================================================================================================================" << endl;
+    cout << "|" << format_Tengah_teks("APAKAH ADA PRODUK YANG INGIN DIPROSES?  (Y/T)", 117)<<"|" << endl;
+    cout << "=======================================================================================================================" << endl;
+    cout << "               Masukan Jawaban : ";
+    cin >> pilih;
+    cin.ignore();
+
+    if (pilih == 'y' || pilih == 'Y')
+    {
+        int nomor;
+        cout << "=======================================================================================================================" << endl;
+        cout << "|" << format_Tengah_teks("PRODUK NOMER BERAPA YANG INGIN DI PROSES?", 117)<<"|" << endl;
+        cout << "=======================================================================================================================" << endl;
+        cout << "               Masukan Jawaban : ";;
+        cin >> nomor;
+        cin.ignore();
+
+        if (nomor < 1 || nomor > jumlah)
+        {
+            cout << "Nomor tidak valid!" << endl;
+            cin.get();
+            system("cls");
+            return;
+        }
+
+        dataDiproses[nomor - 1]->status = "Dikirim";
+        simpan_nota();
+
+        cout << "=======================================================================================================================" << endl;
+        cout << "|" << format_Tengah_teks("PRODUK SEDANG DALAM PROSES PENGIRIMAN", 117) << "|" << endl;
+        cout << "|" << format_Tengah_teks("Tekan enter untuk melanjutkan...", 117)<< "|" << endl;
+        cout << "=======================================================================================================================" << endl;
+        cin.get();
+        system("cls");
+
+        lihat_antrian();
+    }
+    else
+    {
+        system("cls");
+    }
+}
+
+void dequeue()
+{
+    Nota *temp = head;
+    bool ada = false;
+
+    cout << "=======================================================================================================================" << endl;
+    cout << "|" << format_Tengah_teks("P R O S E S  P E N G I R I M A N", 117) << "|" << endl;
+    cout << "=======================================================================================================================" << endl;
+    cout << "|" << format_Tengah_teks("NO", 4) << "|"
+         << format_Tengah_teks("NAMA", 80) << "|"
+         << format_Tengah_teks("JUMLAH", 31) << "|" << endl;
+    while (temp != NULL)
+    {
+        if (temp->status == "Dikirim")
+        {
+            cout << "| Produk : " << left << setw(59) << temp->namaProduk
+                 << "| Jumlah : " << setw(37) << temp->jumlah << "|" << endl;
+            cout << "=======================================================================================================================" << endl;
+
+            ada = true;
+        }
+        temp = temp->next;
+    }
+
+    if (!ada)
+    {
+        cout << "|" << format_Tengah_teks("TIDAK ADA PRODUK YANG SEDANG DALAM PENGIRIMAN", 117) << "|" << endl;
+        cout << "=======================================================================================================================" << endl;
+    }
+
+    cout << "|" << format_Tengah_teks("Tekan enter untuk melanjutkan...", 117)<< "|" << endl;
+    cout << "=======================================================================================================================" << endl;
     cin.get();
     system("cls");
 }
 
 void edit_stok() {
     if(jml_produk == 0) {
-        cout << "=============================================" << endl;
-        cout << "|      T I D A K  A D A  P R O D U K        |" << endl;
-        cout << "=============================================";
+        cout << "=======================================================================================================================" << endl;
+        cout << "|" << format_Tengah_teks("TIDAK ADA PRODUK YANG TERSEDIA.", 117) << "|" << endl;
+        cout << "|" << format_Tengah_teks("Tekan enter untuk melanjutkan...", 117)<< "|" << endl;
+        cout << "=======================================================================================================================" << endl;
         cin.get();
         system("cls");
         return; 
     }
     cout.imbue(locale(cout.getloc(), new format_rupiah));
     cout << "=======================================================================================================================" << endl;
-    cout << "|                                              D A F T A R  P R O D U K                                               |" << endl;
+    cout << "|" << format_Tengah_teks("D A F T A R  P R O D U K", 117) << "|" << endl;
     cout << "=======================================================================================================================" << endl;
-    cout << left << setw(5) << "| NO" << "|"
-         << setw(28) << "    NAMA   " << "|"
-         << setw(45) << "   \t\t\tSpesifikasi" << "|"
-         << setw(15) << "  Harga" << "|"
-         << setw(6)  << " Stok" << "|" << endl;
+    cout << "|" << format_Tengah_teks("NO", 4) << "|"
+         << format_Tengah_teks("NAMA", 28) << "|"
+         << format_Tengah_teks("SPESIFIKASI", 60) << "|"
+         << format_Tengah_teks("HARGA", 15) << "|"
+         << format_Tengah_teks("STOK", 6) << "|" << endl;
     cout << "=======================================================================================================================" << endl;
 
     for (int i = 0; i < jml_produk; i++)
@@ -469,28 +918,29 @@ void edit_stok() {
         system("cls");
 
     if(nomor_produk < 1 || nomor_produk > jml_produk) {
-        cout << "=====================" << endl; 
-        cout << "| Nomor Tidak Valid |" << endl;
-        cout << "=====================";
+        cout << "=======================================================================================================================" << endl;
+        cout << "|" << format_Tengah_teks("N O M O R  T I D A K  V A L I D !", 117) << "|" << endl;
+        cout << "|" << format_Tengah_teks("Tekan enter untuk melanjutkan...", 117)<< "|" << endl;
+        cout << "=======================================================================================================================" << endl;
         cin.get();
         system("cls");
         return;
     }
 
     int stok_baru;
-    cout << "===========================================" << endl;
-    cout << "|            U B A H  S T O K             |" << endl;
-    cout << "===========================================" << endl;
+    cout << "=======================================================================================================================" << endl;
+    cout << "|" << format_Tengah_teks("U B A H  S T O K", 117) << "|" << endl;
+    cout << "=======================================================================================================================" << endl;
     cout << "Masuka Stok baru untuk  " << daftar_produk[nomor_produk - 1].nama << " : ";
     cin >> stok_baru;
     cin.ignore();
     system("cls");
 
     if(stok_baru < 0) {
-        cout << "==========================================" << endl;
-        cout << "|            Stok Tidak Valid            |" << endl;
-        cout << "|        Angka Tidak Boleh Minus         |" << endl;
-        cout << "==========================================";
+        cout << "=======================================================================================================================" << endl;
+        cout << "|" << format_Tengah_teks("S T O K  T I D A K  V A L I D !", 117) << "|" << endl;
+        cout << "|" << format_Tengah_teks("ANGKA TIDAK BOLEH MINUS!", 117) << "|" << endl;
+        cout << "=======================================================================================================================" << endl;
         cin.get();
         system("cls");
         return;
@@ -499,305 +949,13 @@ void edit_stok() {
     daftar_produk[nomor_produk - 1].stok = stok_baru;
     simpan_produk();
 
-    cout << "===================================================" << endl;
-    cout << "|  S T O K  B E R H A S I L  D I P E R B A R U I  |" << endl;
-    cout << "|         Tekan Enter Untuk Melanjutkan           |" << endl;
-    cout << "===================================================";
+    cout << "=======================================================================================================================" << endl;
+    cout << "|" << format_Tengah_teks("S T O K  B E R H A S I L  D I P E R B A R U I", 117) << "|" << endl;
+    cout << "|" << format_Tengah_teks("Tekan enter untuk melanjutkan...", 117)<< "|" << endl;
+    cout << "=======================================================================================================================" << endl;
     cin.get();
     system("cls");
     
-}
-
-void edit_harga_produk()
-{
-    if (jml_produk == 0)
-    {
-        cout << "================================================" << endl;
-        cout << "| Tidak ada produk yang tersedia untuk diedit. |" << endl;
-        cout << "================================================";
-        cin.get();
-        system("cls");
-        return;
-    }
-
-    cout.imbue(locale(cout.getloc(), new format_rupiah));
-    cout << "=====================================================" << endl;
-    cout << "|                 EDIT HARGA PRODUK                 |" << endl;
-    cout << "=====================================================" << endl;
-     cout << left << setw(4) << "| NO" << "|"
-          << setw(28) << "    NAMA   " << "|"
-          << setw(18) << "  Harga Saat Ini" << "|" << endl;
-    cout << "=====================================================" << endl;
-    for (int i = 0; i < jml_produk; i++)
-    {
-        cout << "|" << right << setw(2) << i + 1 << "." << "|"
-             << setw(28) << left << daftar_produk[i].nama << "| Rp."
-             << setw(14) << fixed << setprecision(0) << daftar_produk[i].harga << "|" << endl;
-    }
-    cout << "=====================================================" << endl;
-
-    int nomor;
-    cout << "Masukkan nomor produk yang ingin diubah harganya: ";
-    cin >> nomor;
-    cin.ignore();
-
-    if (nomor < 1 || nomor > jml_produk)
-    {
-        cout << "======================" << endl;
-        cout << "| Nomor tidak valid! |" << endl;
-        cout << "======================";
-        cin.get();
-        system("cls");
-        return;
-    }
-
-    double harga_baru;
-    cout << "Masukkan harga baru untuk " << daftar_produk[nomor - 1].nama << " : Rp.";
-    cin >> harga_baru;
-    cin.ignore();
-    system("cls");
-
-    if (harga_baru < 0)
-    {
-        cout << "==========================================" << endl;
-        cout << "| Harga tidak valid (tidak boleh minus)! |" << endl;
-        cout << "==========================================";
-        cin.get();
-        system("cls");
-        return;
-    }
-
-    daftar_produk[nomor - 1].harga = harga_baru;
-    simpan_produk();
-    cout << "=====================================" << endl;
-    cout << "| Harga produk berhasil diperbarui! |" << endl;
-    cout << "|  Tekan enter untuk melanjutkan... |" << endl;
-    cout << "=====================================";
-    cin.get();
-    system("cls");
-}
-
-void hapus_produk()
-{
-    if (jml_produk == 0)
-    {
-        cout << "=================================================" << endl;
-        cout << "| Tidak ada produk yang tersedia untuk dihapus. |" << endl;
-        cout << "=================================================" << endl;
-        cin.get();
-        system("cls");
-        return;
-    }
-
-cout.imbue(locale(cout.getloc(), new format_rupiah));
-    cout << "==================================================== HAPUS PRODUK =====================================================" << endl;
-    cout << left << setw(5) << "| NO" << "|"
-         << setw(28) << "    NAMA   " << "|"
-         << setw(45) << "   \t\t\tSpesifikasi" << "|"
-         << setw(15) << "  Harga" << "|"
-         << setw(6)  << " Stok" << "|" << endl;
-    cout << "=======================================================================================================================" << endl;
-    for (int i = 0; i < jml_produk; i++)
-    {
-        cout << "| " << right << setw(2) << (i + 1) << "." << "|" 
-             << setw(28) << left << daftar_produk[i].nama << "|"
-             << setw(60) << daftar_produk[i].spesifikasi << "|" << "Rp."
-             << setw(12) << fixed << setprecision(0) << daftar_produk[i].harga << "|"
-             << setw(6) << daftar_produk[i].stok << "|" << endl;
-    }
-    cout << "=======================================================================================================================" << endl;
-
-    int nomor;
-    cout << "Masukkan nomor produk yang ingin dihapus: ";
-    cin >> nomor;
-    cin.ignore();
-
-    if (nomor < 1 || nomor > jml_produk)
-    {
-        cout << "========================" << endl;
-        cout << "|  Nomor tidak valid!  |" << endl;
-        cout << "========================" << endl;
-        cin.get();
-        system("cls");
-        return;
-    }
-
-    string nama_dihapus = daftar_produk[nomor - 1].nama;
-
-    // Menggeser sisa elemen array ke kiri
-    for (int i = nomor - 1; i < jml_produk - 1; i++)
-    {
-        daftar_produk[i] = daftar_produk[i + 1];
-    }
-    jml_produk--;
-
-    simpan_produk();
-    cout << "=====================================================" << endl;
-    cout << "| Produk " << nama_dihapus << " berhasil dihapus!   |" << endl;
-    cout << "|        Tekan enter untuk melanjutkan...           |" << endl;
-    cout << "====================================================="; 
-    cin.get();
-    system("cls");
-}
-
-void sorting()
-{
-    for (int i = 1; i < jml_produk; i++)
-    {
-        produk key = daftar_produk[i];
-        int j = i - 1;
-
-        // bandingkan harga
-        while (j >= 0 && daftar_produk[j].harga > key.harga)
-        {
-            daftar_produk[j + 1] = daftar_produk[j];
-            j = j - 1;
-        }
-        daftar_produk[j + 1] = key;
-    }
-    cout << "=====================================================" << endl;
-    cout << "| Daftar produk sudah diurutkan dari harga terendah |" << endl;
-    cout << "=====================================================";
-    cin.get();
-    system("cls");
-}
-
-void tampilkan_produk(bool pembeli)
-{
-    if (jml_produk == 0)
-    {
-        cout << "=====================================" << endl;
-        cout << "|  Tidak ada produk yang tersedia.  |" << endl;
-        cout << "=====================================";
-        cin.get();
-        system("cls");
-        return;
-    }
-
-    cout.imbue(locale(cout.getloc(), new format_rupiah));
-
-    cout << "=======================================================================================================================" << endl;
-    cout << "|                                              D A F T A R  P R O D U K                                               |" << endl;
-    cout << "=======================================================================================================================" << endl;
-    cout << left << setw(5) << "| NO" << "|"
-         << setw(28) << "    NAMA   " << "|"
-         << setw(45) << "   \t\t\tSpesifikasi" << "|"
-         << setw(15) << "  Harga" << "|"
-         << setw(6)  << " Stok" << "|" << endl;
-    cout << "=======================================================================================================================" << endl;
-
-    for (int i = 0; i < jml_produk; i++)
-    {
-        cout << "| " << right << setw(2) << (i + 1) << "." << "|"
-             << setw(28) << left << daftar_produk[i].nama << "|"
-             << setw(60) << daftar_produk[i].spesifikasi << "|" << "Rp."
-             << setw(12) << fixed << setprecision(0) << daftar_produk[i].harga << "|"
-             << setw(6) << daftar_produk[i].stok << "|" << endl;
-    }
-
-    cout << "=======================================================================================================================" << endl;
-
-    char pilih_sorting;
-    cout << "Urutkan produk dari harga terendah? (y/t): ";
-    cin >> pilih_sorting;
-    cin.ignore();
-
-    if (pilih_sorting == 'y' || pilih_sorting == 'Y')
-    {
-        system("cls");
-        sorting();
-
-        cout << "=======================================================================================================================" << endl;
-        cout << "|                                              D A F T A R  P R O D U K                                               |" << endl;
-        cout << "=======================================================================================================================" << endl;
-        cout << left << setw(5) << "| NO" << "|"
-             << setw(28) << "    NAMA   " << "|"
-             << setw(45) << "   \t\t\tSpesifikasi" << "|"
-             << setw(15) << "  Harga" << "|"
-             << setw(6)  << " Stok" << "|" << endl;
-        cout << "=======================================================================================================================" << endl;
-
-        for (int i = 0; i < jml_produk; i++)
-        {
-            cout << "| " << right << setw(2) << (i + 1) << "." << "|"
-                 << setw(28) << left << daftar_produk[i].nama << "|"
-                 << setw(60) << daftar_produk[i].spesifikasi << "|" << "Rp."
-                 << setw(12) << fixed << setprecision(0) << daftar_produk[i].harga << "|"
-                 << setw(6) << daftar_produk[i].stok << "|" << endl;
-        }
-
-        cout << "=======================================================================================================================" << endl;
-    }
-
-    // kalau penjual, selesai sampai sini
-    if (!pembeli)
-    {
-        cout << "Tekan enter untuk kembali ke menu...";
-        cin.get();
-        system("cls");
-        return;
-    }
-
-    // kalau pembeli, bisa tambah ke keranjang
-    char pilihTambah;
-    cout << "Apakah anda ingin menambahkan produk ke keranjang? (y/t): ";
-    cin >> pilihTambah;
-    cin.ignore();
-
-    if (pilihTambah == 'y' || pilihTambah == 'Y')
-    {
-        int pilih_nomor, jumlah;
-
-        cout << "Masukkan nomor produk: ";
-        cin >> pilih_nomor;
-        cin.ignore();
-
-        if (pilih_nomor < 1 || pilih_nomor > jml_produk)
-        {
-            cout << "======================" << endl;
-            cout << "| Nomor tidak valid! |" << endl;
-            cout << "======================" << endl;
-            cout << "Tekan enter untuk kembali...";
-            cin.get();
-            system("cls");
-            return;
-        }
-
-        cout << "Masukkan jumlah: ";
-        cin >> jumlah;
-        cin.ignore();
-
-        if (jumlah > daftar_produk[pilih_nomor - 1].stok)
-        {
-            cout << "=========================" << endl;
-            cout << "| Stok tidak mencukupi! |" << endl;
-            cout << "=========================" << endl;
-            cout << "Tekan enter untuk kembali...";
-            cin.get();
-            system("cls");
-            return;
-        }
-
-        keranjang[jml_keranjang].namaProduk = daftar_produk[pilih_nomor - 1].nama;
-        keranjang[jml_keranjang].jumlah = jumlah;
-        keranjang[jml_keranjang].harga = daftar_produk[pilih_nomor - 1].harga;
-
-        jml_keranjang++;
-
-        cout << "==============================================" << endl;
-        cout << "| Produk berhasil ditambahkan ke keranjang!  |" << endl;
-        cout << "==============================================" << endl;
-    }
-    else
-    {
-        cout << "==================================" << endl;
-        cout << "| Tidak jadi menambahkan produk |" << endl;
-        cout << "==================================" << endl;
-    }
-
-    cout << "Tekan enter untuk kembali ke menu...";
-    cin.get();
-    system("cls");
 }
 
 
@@ -816,9 +974,9 @@ bool login(string user, string pass)
 
 bool tambah_akun()
 {
-    cout << "====================================" << endl;
-    cout << "|          R E G I S T E R         |" << endl;
-    cout << "====================================" << endl;
+    cout << "=======================================================================================================================" << endl;
+    cout << "|" << format_Tengah_teks("R E G I S T E R", 117) << "|" << endl;
+    cout << "=======================================================================================================================" << endl;
     string user, pass   ;
     cout << "Masukan username : ";
     getline(cin, user);
@@ -829,9 +987,10 @@ bool tambah_akun()
 
     for(int i = 0; i < jml_akun; i++){
         if(username[i] == user) {
-            cout << "=======================================" << endl;
-            cout << "| User sudah ada, silahkan coba lagi! |" << endl;
-            cout << "=======================================";
+            cout << "=======================================================================================================================" << endl;
+            cout << "|" << format_Tengah_teks("USER SUDAH ADA, SILAHKAN COBA LAGI!", 117) << "|" << endl;
+            cout << "|" << format_Tengah_teks("Tekan enter untuk kembali...", 117)<< "|" << endl;
+            cout << "=======================================================================================================================" << endl;
             cin.get();
             system("cls");
             return false;
@@ -843,10 +1002,10 @@ bool tambah_akun()
 
     simpan_akun();
     system("cls");
-    cout << "=======================================================" << endl;
-    cout << "| Selamat anda berhasil mendaftar, selamat berbelanja |" << endl;
-    cout << "|            Tekan enter untuk melanjutkan            |" << endl;
-    cout << "=======================================================";
+    cout << "=======================================================================================================================" << endl;
+    cout << "|" << format_Tengah_teks("SELAMAT ANDA BERHASIL MENDAFTAR, SELAMAT BERBELANJA!", 117) << "|" << endl;
+    cout << "|" << format_Tengah_teks("Tekan enter untuk kembali...", 117)<< "|" << endl;
+    cout << "=======================================================================================================================" << endl;
     cin.get();
     system("cls");
     return true;
@@ -919,11 +1078,13 @@ void menu_utama()
     system("cls");
 }
 
+
 // ===========================
 //   PEMBELI FUNCTION
 // ===========================
 void search_produk()
 {
+    string text;
     string cari;
     bool ditemukan = false;
     int nomor = 1;
@@ -934,44 +1095,51 @@ void search_produk()
 
     int hasil_index[100];
     int jml_hasil = 0;
+    bool header = false;
 
     cout.imbue(locale(cout.getloc(), new format_rupiah));
-    cout << "======================================================================================================================" << endl;
-    cout << "|                                           P R O D U K  D I T E M U K A N                                           |" << endl;
-    cout << "======================================================================================================================" << endl;
-        cout << left << setw(4) << "| NO" << "|"
-         << setw(28) << "    NAMA   " << "|"
-         << setw(44) << "   \t\t\tSpesifikasi" << "|"
-         << setw(15) << "  Harga" << "|"
-         << setw(6)  << " Stok" << "|" << endl;
-    cout << "======================================================================================================================" << endl;
+
     for (int i = 0; i < jml_produk; i++)
     {
         if (toLower(daftar_produk[i].nama).find(cari) != string::npos)
         {
-            cout << "|" << right << setw(2) << nomor++ << "." << "|"
+        if (!header){
+            cout << "=======================================================================================================================" << endl;
+            cout << "|" << format_Tengah_teks("P R O D U K  D I T E M U K A N", 117) << "|" << endl;
+            cout << "=======================================================================================================================" << endl;
+            cout << "|" << format_Tengah_teks("NO", 4) << "|"
+                << format_Tengah_teks("NAMA", 28) << "|"
+                << format_Tengah_teks("SPESIFIKASI", 60) << "|"
+                << format_Tengah_teks("HARGA", 15) << "|"
+                << format_Tengah_teks("STOK", 6) << "|" << endl;
+            cout << "=======================================================================================================================" << endl;
+
+            header = true;
+        }   
+            cout << "| " << right << setw(2) << nomor++ << "." << "|"
                  << setw(28) << left << daftar_produk[i].nama << "|"
                  << setw(60) << daftar_produk[i].spesifikasi << "|" << "Rp."
                  << setw(12) << fixed << setprecision(0) << daftar_produk[i].harga << "|"
                  << setw(6) << daftar_produk[i].stok << "|" << endl;
-
             hasil_index[jml_hasil++] = i;
             ditemukan = true;
         }
     }
-    cout << "======================================================================================================================" << endl;
-
     if(!ditemukan){
-        cout << "=========================" << endl;
-        cout << "| Produk tidak tersedia |" << endl;
-        cout << "=========================";
+        cout << "======================================================================================================================" << endl;
+        cout << "|" << format_Tengah_teks("P R O D U K  T I D A K  T E R S E D I A!", 117) << "|" << endl;
+        cout << "|" << format_Tengah_teks("Tekan enter untuk kembali...", 117)<< "|" << endl;
+        cout << "======================================================================================================================" << endl;
         cin.get();
         system("cls");
         return;
     }
 
     char pilihTambah;
-    cout << "\nApakah Anda ingin menambahkan produk ke keranjang? (y/t): ";
+    cout << "=======================================================================================================================" << endl;
+    cout << "|" << format_Tengah_teks("APAKAH INGIN MENAMBAHKAN PRODUK KE KERANJANG?  (Y/T)", 117)<<"|" << endl;
+    cout << "=======================================================================================================================" << endl;
+    cout << "               Masukan Jawaban : ";
     cin >> pilihTambah;
     cin.ignore();
 
@@ -989,9 +1157,10 @@ void search_produk()
         cin.ignore();
 
         if(pilih_nomor < 1 || pilih_nomor > jml_hasil){
-            cout << "======================" << endl;
-            cout << "| Nomor tidak valid! |" << endl;
-            cout << "======================";
+            cout << "=======================================================================================================================" << endl;
+            cout << "|" << format_Tengah_teks("N O M O R   T I D A K  V A L I D !", 117) <<"|" << endl;
+            cout << "|" << format_Tengah_teks("Tekan enter untuk kembali...", 117)<< "|" << endl;
+            cout << "=======================================================================================================================" << endl;
             cin.get();
             system("cls");
             return;
@@ -1003,9 +1172,10 @@ void search_produk()
 
         int idx = hasil_index[pilih_nomor -1];
         if(jumlah > daftar_produk[idx].stok) {
-            cout << "=========================" << endl;
-            cout << "|  Stok tidak tersedia  |" << endl;
-            cout << "=========================";
+            cout << "=======================================================================================================================" << endl;
+            cout << "|" << format_Tengah_teks("S T O K   T I D A K   T E R S E D I A !", 117)<<"|" << endl;
+            cout << "|" << format_Tengah_teks("Tekan enter untuk kembali...", 117)<< "|" << endl;
+            cout << "=======================================================================================================================" << endl;
             cin.get();
             system("cls");
             return;
@@ -1018,22 +1188,24 @@ void search_produk()
         jml_keranjang++;
 
         system("cls");
-        cout << "=================================================================================" << endl;
-        cout << "|" << left << setw(30) << "Produk"
-             << "|" << setw(10) << "Jumlah"
-             << "|" << setw(37) << "Status" << "|" << endl;
-        cout << "=================================================================================" << endl;
-        cout << "|" << setw(30) << daftar_produk[idx].nama
-             << "|" << setw(10) << jumlah
-             << "|" << setw(37) << "Sudah Ditambahkan ke keranjang" << "|" << endl;
-        cout << "=================================================================================";
+        cout << "=======================================================================================================================" << endl;
+        cout << "|" << format_Tengah_teks("PRODUK", 55) 
+             << "|" << format_Tengah_teks("JUMLAH", 15) 
+             << "|" << format_Tengah_teks("STATUS", 45) << "|" << endl;
+        cout << "=======================================================================================================================" << endl;
+        cout << "|" << setw(55) << (" " + daftar_produk[idx].nama)
+             << "|" << setw(15) << (" " + to_string(jumlah))
+             << "|" << setw(45) << " Sudah Ditambahkan ke keranjang" << "|" << endl;
+        cout << "=======================================================================================================================" << endl;
+        cout << "|" << format_Tengah_teks("Tekan enter untuk melanjutkan...", 117)<< "|" << endl;
+        cout << "=======================================================================================================================" << endl;
         cin.get();
         system("cls");
     }
     char lanjut;
-    cout << "==============================================" << endl;
-    cout << "| apakah ingin lanjut searching produk (y/t) |" << endl;
-    cout << "==============================================" << endl;
+    cout << "=======================================================================================================================" << endl;
+    cout << "|" << format_Tengah_teks("APAKAH INGIN LANJUT SEARCHING PRODUK?  (Y/T)", 117)<<"|" << endl;
+    cout << "=======================================================================================================================" << endl;
     cout << "               Masukan Jawaban : ";
     cin >> lanjut;
     cin.ignore();
@@ -1068,124 +1240,6 @@ void tambah_nota(string nama, int jumlah, double total)
     simpan_nota();
 }
 
-void enqueue(string nama, int jumlah)
-{
-    antrian[rear].namaProduk = nama;
-    antrian[rear].jumlah = jumlah;
-    rear++;
-
-    cout << "===================================" << endl;
-    cout << "| Pesanan masuk ke antrian Proses |" << endl;
-    cout << "===================================";
-    cin.get();
-    system("cls");
-}
-
-void dequeue()
-{
-    Nota *temp = head;
-    bool ada = false;
-
-    cout << "==============================================================" << endl;
-    cout << "|                   P R O S E S  P E N G I R I M A N        |" << endl;
-    cout << "==============================================================" << endl;
-
-    while (temp != NULL)
-    {
-        if (temp->status == "Dikirim")
-        {
-            cout << "| Produk : " << left << setw(40) << temp->namaProduk
-                 << "| Jumlah : " << setw(5) << temp->jumlah << "|" << endl;
-            cout << "==============================================================" << endl;
-
-            ada = true;
-        }
-        temp = temp->next;
-    }
-
-    if (!ada)
-    {
-        cout << "| Tidak ada produk yang sedang dikirim                      |" << endl;
-        cout << "==============================================================" << endl;
-    }
-
-    cout << "Tekan enter untuk kembali...";
-    cin.get();
-    system("cls");
-}
-
-void lihat_antrian()
-{
-    Nota *temp = head;
-    Nota *dataDiproses[100];
-    int jumlah = 0;
-
-    while (temp != NULL)
-    {
-        if (temp->status == "Diproses")
-        {
-            dataDiproses[jumlah] = temp;
-            jumlah++;
-        }
-        temp = temp->next;
-    }
-
-    if (jumlah == 0)
-    {
-        cout << "======================" << endl;
-        cout << "| Tidak ada antrian! |" << endl;
-        cout << "======================";
-        cin.get();
-        system("cls");
-        return;
-    }
-
-    cout << "===================================================" << endl;
-    cout << "|                   A N T R I A N                 |" << endl;
-    cout << "===================================================" << endl;
-
-    for (int i = 0; i < jumlah; i++)
-    {
-        cout << i + 1 << ". "
-             << dataDiproses[i]->namaProduk
-             << " | Jumlah: " << dataDiproses[i]->jumlah << endl;
-    }
-
-    char pilih;
-    cout << "\nApakah ada produk yang ingin diproses? (y/t): ";
-    cin >> pilih;
-    cin.ignore();
-
-    if (pilih == 'y' || pilih == 'Y')
-    {
-        int nomor;
-        cout << "Produk nomor berapa yang ingin diproses? ";
-        cin >> nomor;
-        cin.ignore();
-
-        if (nomor < 1 || nomor > jumlah)
-        {
-            cout << "Nomor tidak valid!" << endl;
-            cin.get();
-            system("cls");
-            return;
-        }
-
-        dataDiproses[nomor - 1]->status = "Dikirim";
-        simpan_nota();
-
-        cout << "Produk sedang diproses pengiriman!" << endl;
-        cin.get();
-        system("cls");
-
-        lihat_antrian();
-    }
-    else
-    {
-        system("cls");
-    }
-}
-
 void barang_sampai()
 {
     Nota *temp = head;
@@ -1204,23 +1258,26 @@ void barang_sampai()
 
     if (jumlah == 0)
     {
-        cout << "==========================================" << endl;
-        cout << "| Tidak ada barang yang sedang dikirim! |" << endl;
-        cout << "==========================================";
+        cout << "=======================================================================================================================" << endl;
+        cout << "|" << format_Tengah_teks("TIDAK ADA BARANG YANG SEDANG DALAM PENGIRIMAN", 117) << "|" << endl;
+        cout << "|" << format_Tengah_teks("Tekan enter untuk melanjutkan...", 117)<< "|" << endl;
+        cout << "=======================================================================================================================" << endl;
         cin.get();
         system("cls");
         return;
     }
 
-    cout << "===================================================" << endl;
-    cout << "|              B A R A N G  D I K I R I M        |" << endl;
-    cout << "===================================================" << endl;
-
+    cout << "=======================================================================================================================" << endl;
+    cout << "|" << format_Tengah_teks("B A R A N G  D I K I R I M", 117) << "|" << endl;
+    cout << "=======================================================================================================================" << endl;
+    cout << "|" << format_Tengah_teks("NO", 4) << "|"
+         << format_Tengah_teks("NAMA", 80) << "|"
+         << format_Tengah_teks("JUMLAH", 31) << "|" << endl;
     for (int i = 0; i < jumlah; i++)
     {
-        cout << i + 1 << ". "
-             << dataDikirim[i]->namaProduk
-             << " | Jumlah: " << dataDikirim[i]->jumlah << endl;
+        cout << "| " << right << setw(3) << (to_string(i + 1) + ".") << "|" 
+                 << setw(80) << left << dataDikirim[i]->namaProduk << "|" 
+                 << setw(31) << dataDikirim[i]->jumlah << "|" <<endl;
     }
 
     int nomor;
@@ -1232,15 +1289,20 @@ void barang_sampai()
 
     if (nomor < 1 || nomor > jumlah)
     {
-        cout << "======================" << endl;
-        cout << "| Nomor tidak valid! |" << endl;
-        cout << "======================";
+        cout << "=======================================================================================================================" << endl;
+        cout << "|"<< format_Tengah_teks("N O M O R   T I D A K  V A L I D !", 117) <<"|" << endl;
+        cout << "|" << format_Tengah_teks("Tekan enter untuk kembali...", 117)<< "|" << endl;
+        cout << "=======================================================================================================================" << endl;
         cin.get();
         system("cls");
         return;
     }
 
-    cout << "Apakah produk sudah diterima? (y/t): ";
+
+    cout << "=======================================================================================================================" << endl;
+    cout << "|" << format_Tengah_teks("APAKAH ADA PRODUK SUDAH DITERIMA?  (Y/T)", 117)<<"|" << endl;
+    cout << "=======================================================================================================================" << endl;
+    cout << "               Masukan Jawaban : ";
     cin >> konfirmasi;
     cin.ignore();
 
@@ -1249,17 +1311,19 @@ void barang_sampai()
         dataDikirim[nomor - 1]->status = "Selesai";
         simpan_nota();
 
-        cout << "==========================================" << endl;
-        cout << "| Barang berhasil dikonfirmasi diterima! |" << endl;
-        cout << "==========================================";
+        cout << "=======================================================================================================================" << endl;
+        cout << "|" << format_Tengah_teks("BARANG TERKONFIRMASI SUDAH DITERIMA PEMBELI!", 117) << "|" << endl;
+        cout << "=======================================================================================================================" << endl;
     }
     else
     {
-        cout << "==============================" << endl;
-        cout << "| Konfirmasi dibatalkan!     |" << endl;
-        cout << "==============================";
+        cout << "=======================================================================================================================" << endl;;
+        cout << "|" << format_Tengah_teks("kONFIRMASI PENERIMAAN BARANG DIBATALKAN!", 117) << "|" << endl;
+        cout << "=======================================================================================================================" << endl;
     }
 
+    cout << "|" << format_Tengah_teks("Tekan enter untuk melanjutkan...", 117)<< "|" << endl;
+    cout << "=======================================================================================================================" << endl;
     cin.get();
     system("cls");
 }
@@ -1270,9 +1334,10 @@ void tampil_riwayat()
 
     if (temp == NULL)
     {
-        cout << "===============================" << endl;
-        cout << "| Belum ada riwayat pembelian |" << endl;
-        cout << "===============================";
+        cout << "=======================================================================================================================" << endl;
+        cout << "|" << format_Tengah_teks("BELUM ADA RIWAYAT PEMBELIAN!", 117) << "|" << endl;
+        cout << "|" << format_Tengah_teks("Tekan enter untuk kembali...", 117)<< "|" << endl;
+        cout << "=======================================================================================================================" << endl;
         cin.get();
         system("cls");
         return;
@@ -1293,43 +1358,51 @@ void tampil_riwayat()
 
         temp = temp->next;
     }
+    cout << "Tekan enter untuk kembali..." <<endl;
+    cin.get();
+    system("cls");
+    return;
 }
 
 void tampil_keranjang()
 {
     if (jml_keranjang == 0)
     {
-        cout << "=================================" << endl;
-        cout << "| Maaf, keranjang masih kosong! |" << endl;
-        cout << "=================================";
+        cout << "=======================================================================================================================" << endl;
+        cout << "|" << format_Tengah_teks("MAAF, KERANJANG MASIH KOSONG!", 117) << "|" << endl;
+        cout << "|" << format_Tengah_teks("Tekan enter untuk kembali...", 117)<< "|" << endl;
+        cout << "=======================================================================================================================" << endl;
         cin.get();
         system("cls");
+        return;
     }
     else
     {
-         cout << "=======================================================================" << endl;
-         cout << "|                  K E R A N J A N G  B E L A N J A                   |" << endl;
-         cout << "=======================================================================" << endl;
-         cout << left << setw(5) << "| NO" << "|"
-         << setw(28) << "    NAMA   " << "|"
-         << setw(15) << "    Jumlah" << "|"
-         << setw(19) << "    Harga" << "|" << endl;
-         cout << "=======================================================================" << endl;
+        cout << "=======================================================================================================================" << endl;
+        cout << "|" << format_Tengah_teks("K E R A N J A N G  B E L A N J A", 117) << "|" << endl;
+        cout << "=======================================================================================================================" << endl;
+        cout << "|" << format_Tengah_teks("NO", 4) << "|"
+             << format_Tengah_teks("NAMA", 60) << "|"
+             << format_Tengah_teks("JUMLAH", 10) << "|"
+             << format_Tengah_teks("HARGA", 40) << "|" << endl;
+         cout << "=======================================================================================================================" << endl;
         double total = 0;
+        int total_jumlah = 0;
         for (int i = 0; i < jml_keranjang; i++)
         {
             double subtotal = keranjang[i].harga * keranjang[i].jumlah;
 
-            cout << "| " << right << setw(2) << (i + 1) << "." << "|" 
-                 << setw(28) << left << keranjang[i].namaProduk << "|\t " 
-                 << setw(9) << keranjang[i].jumlah << "| Rp." 
-                 << setw(15) << fixed << subtotal << "|" << endl;
+            cout << "| " << right << setw(3) << (to_string(i + 1) + ".") << "|" 
+                 << setw(60) << left << keranjang[i].namaProduk << "|" 
+                 << format_Tengah_teks(to_string(keranjang[i].jumlah), 10)<< "| Rp." 
+                 << setw(36) << fixed << subtotal << "|" << endl;
                  
                  total += keranjang[i].harga * keranjang[i].jumlah;
+                 total_jumlah += keranjang[i].jumlah;
         }
-        cout << "=======================================================================" << endl;
-        cout << setw(29) << "|\t\t\tTOTAL" << " = Rp." << fixed << setw(15) << total << "|" << endl;
-        cout << "=======================================================================" << endl;
+        cout << "=======================================================================================================================" << endl;
+        cout << "|" << format_Tengah_teks("TOTAL", 65) <<"|"<< format_Tengah_teks(to_string(total_jumlah), 10) << "| Rp." << fixed << setw(36) << total << "|" << endl;
+        cout << "=======================================================================================================================" << endl;
     }
 }
 
@@ -1353,9 +1426,10 @@ void hapus_keranjang()
 {
     if (jml_keranjang == 0)
     {
-        cout << "=====================" << endl;
-        cout << "| Keranjang kosong! |" << endl;
-        cout << "=====================";
+        cout << "=======================================================================================================================" << endl;
+        cout << "|" << format_Tengah_teks("K E R A N J A N G  K O S O N G !", 117) << "|" << endl;
+        cout << "|" << format_Tengah_teks("Tekan enter untuk kembali...", 117)<< "|" << endl;
+        cout << "=======================================================================================================================" << endl;
         cin.get();
         system("cls");
         return;
@@ -1370,9 +1444,10 @@ void hapus_keranjang()
 
     if (index < 1 || index > jml_keranjang)
     {
-        cout << "======================" << endl;
-        cout << "| Nomor tidak valid! |" << endl;
-        cout << "======================";
+        cout << "=======================================================================================================================" << endl;
+        cout << "|"<< format_Tengah_teks("N O M O R   T I D A K  V A L I D !", 117) <<"|" << endl;
+        cout << "|" << format_Tengah_teks("Tekan enter untuk kembali...", 117)<< "|" << endl;
+        cout << "=======================================================================================================================" << endl;
         cin.get();
         system("cls");
         return;
@@ -1395,38 +1470,39 @@ void hapus_keranjang()
     }
 
     jml_keranjang--;
-    cout << "============================" << endl;
-    cout << "| Barang berhasil dihapus! |" << endl;
-    cout << "============================";
+    cout << "=======================================================================================================================" << endl;
+    cout << "|" << format_Tengah_teks("BARANG BERHASIL DIHAPUS!", 117) << "|" << endl;
+    cout << "=======================================================================================================================" << endl;
     cin.get();
     system("cls");
 }
 
 void undo_hapus_keranjang() {
     if(sKeranjang.top < 0) {
-        cout << "======================================" << endl;
-        cout << "| Tidak ada barang yang bisa di-undo |" << endl;
-        cout << "======================================";
+        cout << "=======================================================================================================================" << endl;
+        cout << "|" << format_Tengah_teks("TIDAK ADA BARANG YANG BISA DI-UNDO", 117) << "|" << endl;
+        cout << "|" << format_Tengah_teks("Tekan enter untuk kembali...", 117)<< "|" << endl;
+        cout << "=======================================================================================================================" << endl;
         cin.get();
         system("cls");
         return;
     }
 
-         cout << "=======================================================================" << endl;
-         cout << "|                      B A R A N G  D I H A P U S                     |" << endl;
-         cout << "=======================================================================" << endl;
-         cout << left << setw(5) << "| NO" << "|"
-         << setw(28) << "    NAMA   " << "|"
-         << setw(15) << "    Jumlah" << "|"
-         << setw(19) << "    Harga" << "|" << endl;
-         cout << "=======================================================================" << endl;
+        cout << "=======================================================================================================================" << endl;
+        cout << "|" << format_Tengah_teks("B A R A N G  D I H A P U S", 117) << "|" << endl;
+        cout << "=======================================================================================================================" << endl;
+        cout << "|" << format_Tengah_teks("NO", 4) << "|"
+             << format_Tengah_teks("NAMA", 59) << "|"
+             << format_Tengah_teks("JUMLAH", 10) << "|"
+             << format_Tengah_teks("HARGA", 40) << "|" << endl;
+         cout << "=======================================================================================================================" << endl;
          for(int i = 0; i <= sKeranjang.top; i++) {
                 cout << "| " << right << setw(2) << (i + 1) << "." << "|" 
-                 << setw(28) << left << sKeranjang.data[i].namaProduk << "|\t " 
-                 << setw(9) << sKeranjang.data[i].jumlah << "| Rp." 
-                 << setw(15) << fixed << setprecision(0) << sKeranjang.data[i].harga << "|" << endl;    
+                 << setw(59) << left << sKeranjang.data[i].namaProduk << "|" 
+                 << setw(10) << sKeranjang.data[i].jumlah << "| Rp." 
+                 << setw(36) << fixed << setprecision(0) << sKeranjang.data[i].harga << "|" << endl;    
          }
-         cout << "=======================================================================" << endl;
+         cout << "=======================================================================================================================" << endl;
          
          int pilih_undo;
          cout << "Pilih nomor barang untuk dikembalikan : ";
@@ -1434,9 +1510,10 @@ void undo_hapus_keranjang() {
          cin.ignore();
 
          if (pilih_undo < 1 || pilih_undo > sKeranjang.top+1) {
-            cout << "=====================" << endl;
-            cout << "| Nomor tidak valid |" << endl;
-            cout << "=====================";
+            cout << "=======================================================================================================================" << endl;
+            cout << "|"<< format_Tengah_teks("N O M O R   T I D A K  V A L I D !", 117) <<"|" << endl;
+            cout << "|" << format_Tengah_teks("Tekan enter untuk kembali...", 117)<< "|" << endl;
+            cout << "=======================================================================================================================" << endl;
             cin.get();
             system("cls");
             return;
@@ -1444,9 +1521,10 @@ void undo_hapus_keranjang() {
 
          Keranjang kembali = pop_keranjang(pilih_undo - 1);
          keranjang[jml_keranjang++] = kembali;
-         cout << "=============================" << endl;
-         cout << "| Barang Sudah Dikembalikan |" << endl;
-         cout << "=============================";
+         cout << "=======================================================================================================================" << endl;
+         cout << "|" << format_Tengah_teks("BARANG SUDAH DIKEMBALIKAN!", 117) << "|" << endl;
+         cout << "|" << format_Tengah_teks("Tekan enter untuk kembali...", 117)<< "|" << endl;
+         cout << "=======================================================================================================================" << endl;;
          cin.get();
          system("cls");
 }
@@ -1454,9 +1532,10 @@ void undo_hapus_keranjang() {
 void tambah_keranjang()
 {
     if (jml_keranjang == 0) {
-        cout << "=====================" << endl;
-        cout << "| keranjang kosong! |" << endl;
-        cout << "=====================";
+        cout << "=======================================================================================================================" << endl;
+        cout << "|" << format_Tengah_teks("K E R A N J A N G   K O S O N G !", 117) << "|" << endl;
+        cout << "|" << format_Tengah_teks("Tekan enter untuk kembali...", 117)<< "|" << endl;
+        cout << "=======================================================================================================================" << endl;
         cin.get();
         system("cls");
         return;
@@ -1469,9 +1548,10 @@ void tambah_keranjang()
     cin.ignore();
 
     if(index < 1 || index > jml_keranjang) {
-        cout << "======================" << endl;
-        cout << "| Nomor tidak Valid! |" << endl;
-        cout << "======================";
+        cout << "=======================================================================================================================" << endl;
+        cout << "|"<< format_Tengah_teks("N O M O R   T I D A K  V A L I D !", 117) <<"|" << endl;
+        cout << "|" << format_Tengah_teks("Tekan enter untuk kembali...", 117)<< "|" << endl;
+        cout << "=======================================================================================================================" << endl;
         cin.get();
         system("cls");
         return;
@@ -1482,9 +1562,24 @@ void tambah_keranjang()
     cin.ignore();
 
     keranjang[index - 1].jumlah += jumlah;
-    cout << "================================" << endl;
-    cout << "| Produk berhasil ditambahkkan |" << endl;
-    cout << "================================";
+    cout << "=======================================================================================================================" << endl;
+    cout << "|" <<format_Tengah_teks("P R O D U K  B E R H A S I L   D I T A M B A H K A N !", 117) << "|" << endl;
+    cout << "|" << format_Tengah_teks("Tekan enter untuk kembali...", 117)<< "|" << endl;
+    cout << "=======================================================================================================================" << endl;
+    cin.get();
+    system("cls");
+}
+
+void enqueue(string nama, int jumlah)
+{
+    antrian[rear].namaProduk = nama;
+    antrian[rear].jumlah = jumlah;
+    rear++;
+
+    cout << "=======================================================================================================================" << endl;
+    cout << "|" << format_Tengah_teks("PESANAN MASUK KE ANTRIAN PROSES!", 117) << "|" << endl;
+    cout << "|" << format_Tengah_teks("Tekan enter untuk kembali...", 117)<< "|" << endl;
+    cout << "=======================================================================================================================" << endl;
     cin.get();
     system("cls");
 }
@@ -1516,9 +1611,10 @@ void Checkout()
     
     simpan_produk();
     jml_keranjang = 0;
-    cout << "======================" << endl;
-    cout << "| Checkout berhasil! |" << endl;
-    cout << "======================";
+    cout << "=======================================================================================================================" << endl;
+    cout << "|" <<format_Tengah_teks("C H E C K O U T  B E R H A S I L !", 117) << "|" << endl;
+    cout << "|" << format_Tengah_teks("Tekan enter untuk kembali...", 117)<< "|" << endl;
+    cout << "=======================================================================================================================" << endl;
     cin.get();
     system("cls");
     return;
@@ -1541,9 +1637,9 @@ menu_awal:
         {
         case 1:
         menu_login_penjual:
-            cout << "================================" << endl;
-            cout << "| V E R I F I K A S I  K O D E |" << endl;
-            cout << "================================" << endl;
+            cout << "=======================================================================================================================" << endl;
+            cout << "|" <<format_Tengah_teks("V E R I F I K A S I  K O D E", 117) << "|" << endl;
+            cout << "=======================================================================================================================" << endl;
             cout << "Masukkan Kode : ";
             getline(cin, kode_kode);
             system("cls");
@@ -1552,19 +1648,20 @@ menu_awal:
             if (kode_kode == Codes[0].kode_penjual)
             {
                 login_kode = true;
-                cout << "================ Login Berhasil ================" << endl;
-                cout << "|            Selamat datang Admin!             |" << endl;
-                cout << "================================================";
+                cout << "=================================================== Login Berhasil! ===================================================" << endl;
+                cout << "|" <<format_Tengah_teks("S E L A M A T  D A T A N G  A D M I N", 117) << "|" << endl;
+                cout << "|" << format_Tengah_teks("Tekan enter untuk melanjutkan...", 117)<< "|" << endl;
+                cout << "=======================================================================================================================" << endl;
                 cin.get();
                 system("cls");
                 goto menu_penjual;
             }
             else
             {
-                cout << "================= Kode Gagal =================" << endl;
-                cout << "|       Kode yang anda masukan salah!        |" << endl;
-                cout << "|                 Coba lagi!                 |" << endl;
-                cout << "==============================================";
+                cout << "===================================================== Kode Gagal! =====================================================" << endl;
+                cout << "|" <<format_Tengah_teks("KODE YANG ANDA MASUKKAN SALAH!", 117) << "|" << endl;
+                cout << "|" <<format_Tengah_teks("C O B A  L A G I !", 117) << "|" << endl;
+                cout << "=======================================================================================================================" << endl;
                 cin.get();
                 system("cls");
                 goto menu_login_penjual;
@@ -1579,9 +1676,9 @@ menu_awal:
             break;
 
         default:
-            cout << "============================****=============================" << endl;
-            cout << "|      pilihan salah, tekan enter untuk coba lagi           |" << endl;
-            cout << "============================****=============================";
+            cout << "======================================================**********=======================================================" << endl;
+            cout << "|" <<format_Tengah_teks("PILIHAN SALAH, TEKAN ENTER UNTUK COBA LAGI!", 117) << "|" << endl;
+            cout << "======================================================**********=======================================================" << endl;
             cin.get();
             system("cls");
             goto menu_awal;
@@ -1619,9 +1716,9 @@ menu_awal:
             edit_stok();
             break;
         case 8:
-            cout << "============================****=============================" << endl;
-            cout << "|              Terima Kasih Atas Kerjasamanya                |" << endl;
-            cout << "============================****=============================";
+            cout << "======================================================**********=======================================================" << endl;
+            cout << "|" <<format_Tengah_teks("TERIMA KASIH ATAS KERJA SAMANYA!", 117) << "|" << endl;
+            cout << "======================================================**********=======================================================" << endl;
             cin.get();
             system("cls");
             goto menu_awal;
@@ -1642,33 +1739,33 @@ menu_login:
         {
         case '1':
         {
-            cout << "==================================" << endl;
-            cout << "|   S I L A H K A N  L O G I N   |" << endl;
-            cout << "==================================" << endl;
+            cout << "=======================================================================================================================" << endl;
+            cout << "|" <<format_Tengah_teks("S I L A H K A N  L O G I N", 117) << "|" << endl;
+            cout << "=======================================================================================================================" << endl;
             string user, pass;
             cout << "Masukkan username : ";
             getline(cin, user);
-            cout << "Masukkan Password :";
+            cout << "Masukkan Password : ";
             getline(cin, pass);
 
             system("cls");
 
             if (login(user, pass))
             {
-                cout << "============================****=============================" << endl;
-                cout << "|                      LOGIN BERHASIL!                      |" << endl;
-                cout << "|                    SELAMAT BERBELANJA                     |" << endl;
-                cout << "============================****=============================";
+                cout << "======================================================**********=======================================================" << endl;
+                cout << "|" <<format_Tengah_teks("L O G I N  B E R H A S I L !", 117) << "|" << endl;
+                cout << "|" <<format_Tengah_teks("S E L A M A T  B E R B E L A N J A", 117) << "|" << endl;
+                cout << "======================================================**********=======================================================" << endl;
                 cin.get();
                 system("cls");
                 goto menu_utama;
             }
             else
             {
-                cout << "============================****=============================" << endl;
-                cout << "|                       LOGIN GAGAL!                        |" << endl;
-                cout << "|                    SILAHKAN COBA LAGI                     |" << endl;
-                cout << "============================****=============================";
+                cout << "======================================================**********=======================================================" << endl;
+                cout << "|" <<format_Tengah_teks("L O G I N  G A G A L !", 117) << "|" << endl;
+                cout << "|" <<format_Tengah_teks("S I L A H K A N  C O B A  L A G I", 117) << "|" << endl;
+                cout << "======================================================**********=======================================================" << endl;
                 cin.get();
                 system("cls");
                 goto menu_login;
@@ -1687,9 +1784,9 @@ menu_login:
             break;
 
         default:
-            cout << "============================****=============================" << endl;
-            cout << "|      pilihan salah, tekan enter untuk coba lagi           |" << endl;
-            cout << "============================****=============================";
+            cout << "======================================================**********=======================================================" << endl;
+            cout << "|" <<format_Tengah_teks("PILIHAN SALAH, TEKAN ENTER UNTUK COBA LAGI!", 117) << "|" << endl;
+            cout << "======================================================**********=======================================================" << endl;
             cin.get();
             system("cls");
             goto menu_login;
@@ -1715,6 +1812,12 @@ menu_utama:
             int pilihkeranjang;
             do 
             {
+                if (jml_keranjang == 0)
+                {
+                    tampil_keranjang(); 
+                    break;
+                }
+
                 menu_keranjang();
                 pilihkeranjang = pilih;
 
@@ -1730,6 +1833,7 @@ menu_utama:
 
                     case 3:
                     Checkout();
+                    goto menu_utama;
                     break;
 
                     case 4:
@@ -1747,9 +1851,9 @@ menu_utama:
             barang_sampai();
             break;
         case 6:
-            cout << "============================****=============================" << endl;
-            cout << "|               TERIMA KASIH SUDAH BERBELANJA               |" << endl;
-            cout << "============================****=============================";
+            cout << "======================================================**********=======================================================" << endl;
+            cout << "|" <<format_Tengah_teks("TERIMA KASIH SUDAH BERBELANJA!", 117) << "|" << endl;
+            cout << "======================================================**********=======================================================" << endl;
             cin.get();
             system("cls");
             goto menu_awal;
