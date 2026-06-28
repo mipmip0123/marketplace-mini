@@ -848,25 +848,34 @@ void dequeue()
 {
     Nota *temp = head;
     bool ada = false;
+    int no = 1;
+    bool header = false;
 
-    cout << "=======================================================================================================================" << endl;
-    cout << "|" << format_Tengah_teks("P R O S E S  P E N G I R I M A N", 117) << "|" << endl;
-    cout << "=======================================================================================================================" << endl;
-    cout << "|" << format_Tengah_teks("NO", 4) << "|"
-         << format_Tengah_teks("NAMA", 80) << "|"
-         << format_Tengah_teks("JUMLAH", 31) << "|" << endl;
     while (temp != NULL)
     {
         if (temp->status == "Dikirim")
         {
-            cout << "| Produk : " << left << setw(59) << temp->namaProduk
-                 << "| Jumlah : " << setw(37) << temp->jumlah << "|" << endl;
-            cout << "=======================================================================================================================" << endl;
+            if(!header){
+                cout << "=======================================================================================================================" << endl;
+                cout << "|" << format_Tengah_teks("P R O S E S  P E N G I R I M A N", 117) << "|" << endl;
+                cout << "=======================================================================================================================" << endl;
+                cout << "|" << format_Tengah_teks("NO", 4) << "|"
+                << format_Tengah_teks("NAMA", 80) << "|"
+                << format_Tengah_teks("JUMLAH", 31) << "|" << endl;
+                cout << "=======================================================================================================================" << endl;
+                header = true;
+            }
+            cout << "| " << right << setw(3) << (to_string(no) + ".") << "|" 
+                 << setw(80) << left << temp->namaProduk << "|" 
+                 << setw(31) << temp->jumlah << "|" <<endl;
 
             ada = true;
+            no++;
         }
         temp = temp->next;
     }
+
+    cout << "=======================================================================================================================" << endl;
 
     if (!ada)
     {
@@ -1245,6 +1254,7 @@ void barang_sampai()
     Nota *temp = head;
     Nota *dataDikirim[100];
     int jumlah = 0;
+    bool header = false;
 
     while (temp != NULL)
     {
@@ -1267,14 +1277,19 @@ void barang_sampai()
         return;
     }
 
-    cout << "=======================================================================================================================" << endl;
-    cout << "|" << format_Tengah_teks("B A R A N G  D I K I R I M", 117) << "|" << endl;
-    cout << "=======================================================================================================================" << endl;
-    cout << "|" << format_Tengah_teks("NO", 4) << "|"
-         << format_Tengah_teks("NAMA", 80) << "|"
-         << format_Tengah_teks("JUMLAH", 31) << "|" << endl;
+    
     for (int i = 0; i < jumlah; i++)
     {
+        if(!header){
+            cout << "=======================================================================================================================" << endl;
+            cout << "|" << format_Tengah_teks("B A R A N G  D I K I R I M", 117) << "|" << endl;
+            cout << "=======================================================================================================================" << endl;
+            cout << "|" << format_Tengah_teks("NO", 4) << "|"
+                << format_Tengah_teks("NAMA", 80) << "|"
+                << format_Tengah_teks("JUMLAH", 31) << "|" << endl;
+
+                header = true;
+        }
         cout << "| " << right << setw(3) << (to_string(i + 1) + ".") << "|" 
                  << setw(80) << left << dataDikirim[i]->namaProduk << "|" 
                  << setw(31) << dataDikirim[i]->jumlah << "|" <<endl;
@@ -1283,7 +1298,8 @@ void barang_sampai()
     int nomor;
     char konfirmasi;
 
-    cout << "\nPilih nomor barang yang sudah diterima: ";
+    cout << "=======================================================================================================================" << endl;
+    cout << "Pilih nomor barang yang sudah diterima: ";
     cin >> nomor;
     cin.ignore();
 
@@ -1318,7 +1334,7 @@ void barang_sampai()
     else
     {
         cout << "=======================================================================================================================" << endl;;
-        cout << "|" << format_Tengah_teks("kONFIRMASI PENERIMAAN BARANG DIBATALKAN!", 117) << "|" << endl;
+        cout << "|" << format_Tengah_teks("KONFIRMASI PENERIMAAN BARANG DIBATALKAN!", 117) << "|" << endl;
         cout << "=======================================================================================================================" << endl;
     }
 
