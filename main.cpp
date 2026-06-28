@@ -167,18 +167,29 @@ string format_Tengah_teks(string pesan, int lebar_total) {
 
 void sorting()
 {
-    for (int i = 1; i < jml_produk; i++)
-    {
-        produk key = daftar_produk[i];
-        int j = i - 1;
+    produk temp[MAX_PRODUK];
+    for(int i = 0; i < jml_produk; i++) temp[i] = daftar_produk[i];
 
-        // bandingkan harga
-        while (j >= 0 && daftar_produk[j].harga > key.harga)
-        {
-            daftar_produk[j + 1] = daftar_produk[j];
-            j = j - 1;
+    for(int i = 1; i < jml_produk; i++) {
+        produk key = temp[i];
+        int j = i - 1;
+        while(j >= 0 && temp[j].harga > key.harga) {
+            temp[j + 1] = temp[j];
+            j--;
         }
-        daftar_produk[j + 1] = key;
+        temp[j + 1] = key;
+
+         cout << "=======================================================================================================================" << endl;
+    cout << "|" << format_Tengah_teks("D A F T A R  P R O D U K (TERURUT)",117) << "|" << endl;
+    cout << "=======================================================================================================================" << endl;
+    for (int i = 0; i < jml_produk; i++) {
+        cout << "| " << right << setw(2) << (i + 1) << "." << "|"
+             << setw(28) << left << temp[i].nama << "|"
+             << setw(60) << temp[i].spesifikasi << "|" << "Rp."
+             << setw(12) << fixed << setprecision(0) << temp[i].harga << "|"
+             << setw(6) << temp[i].stok << "|" << endl;
+    }
+    cout << "=======================================================================================================================" << endl;
     }
     cout << "=======================================================================================================================" << endl;
     cout << "|" << format_Tengah_teks("DAFTAR PRODUK SUDAH DIURUTKAN DARI HARGA TERRENDAH!", 117) << "|" << endl;
@@ -238,6 +249,7 @@ int muat_produk()
         size_t pos2 = line.find("|", pos1 + 1);
         size_t pos3 = line.find("|", pos2 + 1);
         size_t pos4 = line.find("|", pos3 + 1);
+
 
         daftar_produk[jml_produk].nama = line.substr(0, pos1);
         daftar_produk[jml_produk].spesifikasi = line.substr(pos1 + 1, pos2 - pos1 - 1);
@@ -1640,7 +1652,7 @@ void Checkout()
 int main()
 {
     muat_akun();
-    muat_produk();
+    muat_produk(); 
     muat_nota();
     initstack_keranjang();
 
