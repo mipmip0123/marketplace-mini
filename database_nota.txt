@@ -1,2 +1,15 @@
-mip|Samsung Galaxy A55|1|5999000|Sun Jun 28 21:26:31 2026|Diproses
-lrskinan|iPhone 15|1|12999000|Sun Jun 28 21:31:20 2026|Diproses
+mip|Samsung Galaxy A55|1|5999000|Sun Jun 28 21:35:17 2026|Diproses
+lrskinan|iPhone 15|1|12999000|Sun Jun 28 21:36:24 2026|Diproses
+lrskinan|Xiaomi Redmi Note 13 Pro|1|4999000|Sun Jun 28 21:36:25 2026|Diproses
+lrskinan|Samsung Galaxy S24 Ultra|1|21999000|Sun Jun 28 21:38:25 2026|Diproses
+lrskinan|Honor X9b|1|4999000|Sun Jun 28 21:38:27 2026|Diproses
+lrskinan|Samsung Galaxy A55|1|5999000|Sun Jun 28 21:42:00 2026|Diproses
+lrskinan|Samsung Galaxy S24 Ultra|1|21999000|Sun Jun 28 21:42:02 2026|Diproses
+lrskinan|Samsung Galaxy A35|1|4999000|Sun Jun 28 21:42:03 2026|Diproses
+mip|Samsung Galaxy S24 Ultra|1|21999000|Sun Jun 28 21:45:07 2026|Diproses
+mip|POCO X6 Pro|1|5499000|Sun Jun 28 21:47:35 2026|Diproses
+mip|Xiaomi Redmi Note 14|1|3799000|Sun Jun 28 21:47:35 2026|Diproses
+mip|Samsung Galaxy A55|1|5999000|Sun Jun 28 21:48:07 2026|Diproses
+mip|Samsung Galaxy S24 Ultra|1|21999000|Sun Jun 28 21:48:07 2026|Diproses
+mip|Samsung Galaxy A55|1|5999000|Sun Jun 28 21:49:20 2026|Diproses
+mip|Samsung Galaxy S24 Ultra|1|21999000|Sun Jun 28 21:49:21 2026|Diproses

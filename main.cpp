@@ -1607,16 +1607,11 @@ void enqueue(string nama, int jumlah)
     antrian[rear].jumlah = jumlah;
     rear++;
 
-    cout << "=======================================================================================================================" << endl;
-    cout << "|" << format_Tengah_teks("PESANAN MASUK KE ANTRIAN PROSES!", 117) << "|" << endl;
-    cout << "|" << format_Tengah_teks("Tekan enter untuk kembali...", 117)<< "|" << endl;
-    cout << "=======================================================================================================================" << endl;
-    cin.get();
-    system("cls");
 }
 
 void Checkout()
 {
+    bool berhasil = false;
     for (int i = 0; i < jml_keranjang; i++)
     {
         for (int j = 0; j < jml_produk; j++)
@@ -1627,8 +1622,7 @@ void Checkout()
         }
     }
         double total = keranjang[i].harga * keranjang[i].jumlah;
-
-        tambah_nota(
+             tambah_nota(
             keranjang[i].namaProduk,
             keranjang[i].jumlah,
             total
@@ -1638,6 +1632,13 @@ void Checkout()
             keranjang[i].namaProduk,
             keranjang[i].jumlah
         );
+        if (!berhasil){
+         cout << "=======================================================================================================================" << endl;
+        cout << "|" << format_Tengah_teks("PESANAN MASUK KE ANTRIAN PROSES!", 117) << "|" << endl;
+        cout << "|" << format_Tengah_teks("Tekan enter untuk kembali...", 117)<< "|" << endl;
+        cout << "=======================================================================================================================" << endl;
+    berhasil = true;
+        }
     }
     
     simpan_produk();
