@@ -38,10 +38,11 @@ struct new_produk
     string spesifikasi;
     double harga;
     int stok;
-} new_produk;
+}   new_produk;
 
 struct Nota
 {
+    string username;
     string namaProduk;
     int jumlah;
     double totalHarga;
@@ -74,6 +75,8 @@ produk daftar_produk[MAX_PRODUK];
 Keranjang keranjang[100];
 Queue antrian[100];
 string username[MAX_AKUN], password[MAX_AKUN];
+
+int indexLogin = -1;
 kode Codes[1] = {"11223344"};
 
 int jml_produk = 0, jml_keranjang = 0, jml_akun = 0;
@@ -178,8 +181,8 @@ void sorting()
             j--;
         }
         temp[j + 1] = key;
-
-         cout << "=======================================================================================================================" << endl;
+    }
+    cout << "=======================================================================================================================" << endl;
     cout << "|" << format_Tengah_teks("D A F T A R  P R O D U K (TERURUT)",117) << "|" << endl;
     cout << "=======================================================================================================================" << endl;
     for (int i = 0; i < jml_produk; i++) {
@@ -190,13 +193,13 @@ void sorting()
              << setw(6) << temp[i].stok << "|" << endl;
     }
     cout << "=======================================================================================================================" << endl;
-    }
     cout << "=======================================================================================================================" << endl;
     cout << "|" << format_Tengah_teks("DAFTAR PRODUK SUDAH DIURUTKAN DARI HARGA TERRENDAH!", 117) << "|" << endl;
     cout << "|" << format_Tengah_teks("Tekan enter untuk melanjutkan...", 117)<< "|" << endl;
     cout << "=======================================================================================================================" << endl;
     cin.get();
     system("cls");
+    return;
 }
 
 // ==========================
@@ -227,6 +230,7 @@ void simpan_produk()
 
 int muat_produk()
 {
+
     ifstream file("database_produk.txt");
     if (!file)
     {
@@ -278,6 +282,7 @@ void simpan_nota()
 
     while(temp != NULL)
     {
+        file << temp->username << "|";
         file << temp->namaProduk << "|";
         file << temp->jumlah << "|";
         file << fixed << setprecision(0) << temp->totalHarga << "|";
@@ -299,9 +304,10 @@ void muat_nota()
         return;
     }
 
-    string nama, jumlahStr, totalStr, waktu, status;
+    string usernameFile, nama, jumlahStr, totalStr, waktu, status;
 
     while (
+        getline(file, usernameFile, '|') &&
         getline(file, nama, '|') &&
         getline(file, jumlahStr, '|') &&
         getline(file, totalStr, '|') &&
@@ -311,6 +317,7 @@ void muat_nota()
     {
         Nota *baru = new Nota;
 
+        baru->username = usernameFile;
         baru->namaProduk = nama;
         baru->jumlah = stoi(jumlahStr);
         baru->totalHarga = stod(totalStr);
@@ -672,27 +679,6 @@ void tampilkan_produk(bool pembeli)
     {
         system("cls");
         sorting();
-
-        cout << "=======================================================================================================================" << endl;
-        cout << "|"<< format_Tengah_teks("D A F T A R  P R O D U K",117)<<"|" << endl;
-        cout << "=======================================================================================================================" << endl;
-        cout << "|" << format_Tengah_teks("NO", 4) << "|"
-         << format_Tengah_teks("NAMA", 28) << "|"
-         << format_Tengah_teks("SPESIFIKASI", 60) << "|"
-         << format_Tengah_teks("HARGA", 15) << "|"
-         << format_Tengah_teks("STOK", 6) << "|" << endl;
-        cout << "=======================================================================================================================" << endl;
-
-        for (int i = 0; i < jml_produk; i++)
-        {
-            cout << "| " << right << setw(2) << (i + 1) << "." << "|"
-                 << setw(28) << left << daftar_produk[i].nama << "|"
-                 << setw(60) << daftar_produk[i].spesifikasi << "|" << "Rp."
-                 << setw(12) << fixed << setprecision(0) << daftar_produk[i].harga << "|"
-                 << setw(6) << daftar_produk[i].stok << "|" << endl;
-        }
-
-        cout << "=======================================================================================================================" << endl;
     }
 
     // kalau penjual, selesai sampai sini
@@ -978,8 +964,10 @@ bool login(string user, string pass)
 {
     for (int i = 0; i < jml_akun; i++)
     {
-        if (username[i] == user && password[i] == pass)
+        if (username[i] == user && password[i] == pass){
+            indexLogin = i;
             return true;
+        }
     }
     return false;
 }
@@ -1232,6 +1220,7 @@ void search_produk()
 void tambah_nota(string nama, int jumlah, double total)
 {
     Nota *baru = new Nota;
+    baru->username = username[indexLogin];
     baru->namaProduk = nama;
     baru->jumlah = jumlah;
     baru->totalHarga = total;
@@ -1343,6 +1332,7 @@ void barang_sampai()
 void tampil_riwayat()
 {
     Nota *temp = head;
+    bool ditemukan = false;
 
     if (temp == NULL)
     {
@@ -1358,17 +1348,30 @@ void tampil_riwayat()
     cout.imbue(locale(cout.getloc(), new format_rupiah));
     while (temp !=NULL)
     {
-        cout << "==================================" << endl;
-        cout << "|   N O T A  P E M B E L I A N   |" << endl;
-        cout << "==================================" << endl;
-        cout << "Produk  : " << temp->namaProduk << endl;
-        cout << "Jumlah  : " << temp->jumlah << endl;
-        cout << "Total   : Rp. " << fixed << setprecision(0) << temp->totalHarga << endl;
-        cout << "Waktu   : " << temp->waktu << endl;
-        cout << "Status  : " << temp->status << endl;
-        cout << "==================================" << endl;
+        if(temp->username == username[indexLogin]){
+            ditemukan = true;
+            cout << "==================================" << endl;
+            cout << "|   N O T A  P E M B E L I A N   |" << endl;
+            cout << "==================================" << endl;
+            cout << "Produk  : " << temp->namaProduk << endl;
+            cout << "Jumlah  : " << temp->jumlah << endl;
+            cout << "Total   : Rp. " << fixed << setprecision(0) << temp->totalHarga << endl;
+            cout << "Waktu   : " << temp->waktu << endl;
+            cout << "Status  : " << temp->status << endl;
+            cout << "==================================" << endl;
+        }
 
         temp = temp->next;
+    }
+
+    if(!ditemukan){
+        cout << "=======================================================================================================================" << endl;
+        cout << "|" << format_Tengah_teks("BELUM ADA RIWAYAT PEMBELIAN!", 117) << "|" << endl;
+        cout << "|" << format_Tengah_teks("Tekan enter untuk kembali...", 117)<< "|" << endl;
+        cout << "=======================================================================================================================" << endl;
+        cin.get();
+        system("cls");
+        return;
     }
     cout << "Tekan enter untuk kembali..." <<endl;
     cin.get();

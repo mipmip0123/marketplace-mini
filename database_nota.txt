@@ -1,1 +1,2 @@
-|Samsung Galaxy A15|1|2999000|Sun Jun 28 19:48:23 2026|Diproses
+mip|Samsung Galaxy A55|1|5999000|Sun Jun 28 21:26:31 2026|Diproses
+lrskinan|iPhone 15|1|12999000|Sun Jun 28 21:31:20 2026|Diproses
